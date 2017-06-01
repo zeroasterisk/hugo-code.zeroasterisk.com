@@ -1,0 +1,1003 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            
+                <title>zeroasterisk talks code</title>
+            
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.20.7" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="Aquire Superpowers - Let&#39;s all learn how to code/dev/devops">
+            
+        
+
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:text:title" content=""/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="|-&#43;-| author = &ldquo;&rdquo; categories = [] date = &ldquo;2017-05-31T22:56:48-04:00&rdquo; description = &ldquo;&rdquo; featured = &ldquo;&rdquo; featuredalt = &ldquo;&rdquo; featuredpath = &ldquo;&rdquo; linktitle = &ldquo;&rdquo; title = &ldquo;2017 05 31 meteor 1 5 optimization examples&rdquo;
+&#43;&#43;&#43;
+I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&hellip; make meteor faster for your users."/>
+<meta name="twitter:site" content="@zeroasterisk"/>
+
+        <meta property="og:title" content="" />
+<meta property="og:description" content="|-&#43;-| author = &ldquo;&rdquo; categories = [] date = &ldquo;2017-05-31T22:56:48-04:00&rdquo; description = &ldquo;&rdquo; featured = &ldquo;&rdquo; featuredalt = &ldquo;&rdquo; featuredpath = &ldquo;&rdquo; linktitle = &ldquo;&rdquo; title = &ldquo;2017 05 31 meteor 1 5 optimization examples&rdquo;
+&#43;&#43;&#43;
+I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&hellip; make meteor faster for your users." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://code.zeroasterisk.com/post/2017-05-31-meteor-1-5-optimization-examples/" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+<meta itemprop="name" content="">
+<meta itemprop="description" content="|-&#43;-| author = &ldquo;&rdquo; categories = [] date = &ldquo;2017-05-31T22:56:48-04:00&rdquo; description = &ldquo;&rdquo; featured = &ldquo;&rdquo; featuredalt = &ldquo;&rdquo; featuredpath = &ldquo;&rdquo; linktitle = &ldquo;&rdquo; title = &ldquo;2017 05 31 meteor 1 5 optimization examples&rdquo;
+&#43;&#43;&#43;
+I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&hellip; make meteor faster for your users.">
+
+
+
+<meta itemprop="wordCount" content="1522">
+
+
+
+<meta itemprop="keywords" content="" />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="/css/google-font.css" />
+            <link rel="stylesheet" href="/css/font-awesome.min.css" />
+            <link rel="stylesheet" href="/css/main.css" />
+            <link rel="stylesheet" href="/css/add-on.css" />
+            <link rel="stylesheet" href="/css/monokai-sublime.css">
+        
+
+        
+
+        
+        
+        
+            
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-2011466-10', 'auto');
+ga('send', 'pageview');
+</script>
+
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+    
+<header id="header">
+    
+        <h2><a href="/">Aquire Superpowers</i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="/posts">
+                        
+                            <i class="fa fa-code-o">&nbsp;</i>Posts
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="/categories">
+                        
+                            <i class="fa fa-tasks">&nbsp;</i>Categories
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="/about">
+                        
+                            <i class="fa fa-user">&nbsp;</i>About
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:https://code.zeroasterisk.com/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:https://code.zeroasterisk.com/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="/posts">
+                            <h3>
+                                
+                                    <i class="fa fa-code-o">&nbsp;</i>
+                                
+                                Posts
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories">
+                            <h3>
+                                
+                                    <i class="fa fa-tasks">&nbsp;</i>
+                                
+                                Categories
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/about">
+                            <h3>
+                                
+                                    <i class="fa fa-user">&nbsp;</i>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="https://code.zeroasterisk.com/post/2017-05-31-meteor-1-5-optimization-examples/"><p></p></a>
+                    </li>
+                
+                    <li>
+                        <a href="https://code.zeroasterisk.com/post/"><p>Posts</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&text=&via=zeroasterisk" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&title=" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&title=" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&title=" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by &body=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
+    
+    <div id="main">
+        
+        
+        <article class="post">
+    <header>
+    <div class="title">
+        
+            <h1><a href="https://code.zeroasterisk.com/post/2017-05-31-meteor-1-5-optimization-examples/"></a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='0001-01-01'>
+            January 1, 0001</time>
+        <span class="author"></span>
+        
+            <p>8 minute read</p>
+        
+        
+    </div>
+</header>
+
+
+    <section id="social-share">
+        <ul class="icons">
+            
+
+
+<li><a href="//twitter.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&text=&via=zeroasterisk" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&title=" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&title=" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f&title=" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by &body=https%3a%2f%2fcode.zeroasterisk.com%2fpost%2f2017-05-31-meteor-1-5-optimization-examples%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+    
+
+    <div id="content">
+        
+
+<p>|-+-|
+author = &ldquo;&rdquo;
+categories = []
+date = &ldquo;2017-05-31T22:56:48-04:00&rdquo;
+description = &ldquo;&rdquo;
+featured = &ldquo;&rdquo;
+featuredalt = &ldquo;&rdquo;
+featuredpath = &ldquo;&rdquo;
+linktitle = &ldquo;&rdquo;
+title = &ldquo;2017 05 31 meteor 1 5 optimization examples&rdquo;</p>
+
+<p>+++</p>
+
+<p>I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&hellip; make meteor faster for your users.</p>
+
+<blockquote>
+<p>If you&rsquo;re not already familiar with Meteor you should checkout [the meteor website][meteor] and also [the meteor chef][meteorchef]</p>
+</blockquote>
+
+<p>[Meteor 1.5 landed][meteor-1.5], and it&rsquo;s got a lot of fantastic features,
+but I think the big one that people want to know about is
+<strong>the ability to dynamicaly import code</strong>.</p>
+
+<p>What is that?  Why is it useful?  How do I do it?  How do I know what to dynamicly import?</p>
+
+<p>Well, this is a bit of a deep dive into some of those questions, and how to use these new tools to improve your application&rsquo;s load time.</p>
+
+<p>This post is <strong>about identifying what to optimize and how to optimize</strong>&hellip;
+I will do another about how to develop better dynamicly imported components.</p>
+
+<h3 id="setup-a-basic-meteor-project">Setup a Basic Meteor Project</h3>
+
+<blockquote>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a> and checkout the <code>01-initial</code> branch.
+Or you can use the following instructions to get up to this starting point.
+Or you can jump right into this topic on your own project.</p>
+</blockquote>
+
+<p>To do anything, we need a simple test project.
+I am starting with [Meteor Chef Base][meteorchefbase]
+and I am adding <a href="https://github.com/airbnb/react-dates">react-dates</a> and a bit of functionality
+to pick date ranges
+<em>(I also happen to know it has a noticable impact on bundle size, which we will see later)</em>.</p>
+
+<pre><code class="language-sh">git clone https://github.com/themeteorchef/base.git meteor-example-optimize-client-bundle
+cd meteor-example-optimize-client-bundle
+rm -rf .git &amp;&amp; git init &amp;&amp; git add . &amp;&amp; git add .meteor/*
+meteor update --release 1.5
+cat .meteor/release
+  METEOR@1.5
+meteor npm install --save react-dates moment react-addons-shallow-compare
+npm start
+</code></pre>
+
+<p>I then edited the code and added an example to create a simple example project.</p>
+
+<p><img src="https://media.giphy.com/media/xUA7aRqXjSZBc4oHDy/giphy.gif" alt="screencast basic functionality" /></p>
+
+<p>Not terrible for a quick example <em>(and not a todo list)</em>.</p>
+
+<h4 id="goal-reduce-time-to-initial-render">Goal: Reduce Time to Initial Render</h4>
+
+<blockquote>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a> and checkout the <code>02-before-optimization</code> branch.</p>
+</blockquote>
+
+<p>Make things faster, always.
+Initial render of the site/app is a <em>great</em> metric to improve on
+and one of the pain points for meteor apps.</p>
+
+<p>Why?  When in production mode, Meteor builds all of your app into 1 big JS and 1 big CSS file - these are called the <em>&ldquo;client bundle&rdquo;</em>.</p>
+
+<p>Meteor does it&rsquo;s best to minimize those files, and cache them&hellip; but it can still be a whole lot of stuff sent to the client (this is all of your code and your code&rsquo;s dependancies) on initial pageload&hellip;
+Especially if you don&rsquo;t always need some of those components and dependancies.</p>
+
+<p>To test and profile, <em>we have to run in production mode</em>,
+as if we had deployed to a server.</p>
+
+<p><code>meteor --production</code></p>
+
+<p>Our super-tiny example app is <em>not too bad</em>, but could certainly get better.</p>
+
+<p>Our biggest slowdown by far is the bundle of all javascript.</p>
+
+<p>|&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;|
+|            | size   | download_time |
+|&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;|
+| JS bundle  | 494 KB | 444 ms        |
+| CSS bundle | 7 KB   | 2 ms          |
+|&mdash;&mdash;&mdash;&mdash;+&mdash;&mdash;&ndash;+&mdash;&mdash;&mdash;&mdash;&mdash;|</p>
+
+<p><img src="https://puu.sh/w80ky/6ded16d16d.png" alt="time-to-render-prod-mode-before-optimize" /></p>
+
+<p>Wow, but this is such a tiny application&hellip; what can we do?</p>
+
+<h3 id="profile-profile-profile">Profile Profile Profile&hellip;.</h3>
+
+<p>You should never optimize without profiling.</p>
+
+<p>Sure, when you develop keep performance and optimization in mind - use best practices and all that.
+But when you are trying to figure out how you can improve performance, you should use tools to profile and get information about what to optimize.
+Without that profiling information, you will be treading water, spending lots of effort for little value.</p>
+
+<h4 id="how-to-profile-meteor-javascript-bundle">How to Profile Meteor JavaScript Bundle?</h4>
+
+<p>So we know we need to reduce the total JavaScript Bundle&hellip; but how?
+What&rsquo;s Big?
+What&rsquo;s easy to remove?
+What&rsquo;s not used?</p>
+
+<p>Luckily, there is a now a
+[bundle-visualizer][bundle-visualizer] package which gives us an awesome
+sundail graph for identifying size in our initial load.</p>
+
+<pre><code class="language-sh">meteor add bundle-visualizer
+npm run start-as-prod
+# ^ if you don't have my package.json scripts, you would run
+#   meteor --production
+</code></pre>
+
+<p>Then an overlay happens in your browser and you can hover over parts to see what they total size is for the part, and it&rsquo;s children&hellip;</p>
+
+<p><img src="https://media.giphy.com/media/l4FGFeTW6pqVvabGE/giphy.gif" alt="bundle-visualizer-before-optimize" /></p>
+
+<p>This is <strong>AMAZING</strong>
+<img src="http://emojis.slackmojis.com/emojis/images/1450447981/152/aw_yeah.gif" alt="aw_yeah" /></p>
+
+<p>Real quick review of some numbers here:</p>
+
+<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;|
+| section           | percent |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;|
+| <code>react-dom</code>       | <code>9.4%</code>  |
+| <code>react-dates</code>     | <code>9.1%</code>  |
+| <code>react-bootstrap</code> | <code>8.4%</code>  |
+| <code>bootstrap</code>       | <code>6.4%</code>  |
+| <code>jquery</code>          | <code>4.6%</code>  |
+| <code>handlebars</code>      | <code>4.0%</code>  |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;|
+| app code          | <code>1.7%</code>  |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+&mdash;&mdash;&mdash;|</p>
+
+<p><img src="https://puu.sh/w82Pi/11b30cc350.png" alt="app-1.7percent" /></p>
+
+<p>My entire app code is <code>32k</code> which is only <code>1.7%</code> of the clientside bundle!</p>
+
+<h3 id="pick-high-value-targets-sections-to-remove-reduce-or-delay">Pick high value targets - sections to remove, reduce, or delay</h3>
+
+<p>Armed with this information, we try to identify a section of code we can reduce from our bundle.</p>
+
+<p>We start by looking at the &ldquo;biggest&rdquo; sections of code (clockwise),
+and for each section we try to ask ourselves if we can <strong>remove</strong> or <strong>reduce</strong> or <strong>delay</strong> loading.</p>
+
+<ol>
+<li><strong>remove</strong> from our project entirely (best solution, but not often possible)</li>
+<li><strong>reduce</strong> <em>significantly</em> the size of a section (micro optimization, not usually effective)</li>
+<li><strong>delay</strong> loading a section via <strong>dynamic import</strong> (our new option)</li>
+</ol>
+
+<p>In this example, I could <strong>remove</strong> <code>jquery</code> or <code>handlebars</code> becaue I&rsquo;m not using it&hellip; but Meteor Chef Base is&hellip; This is outside of the scope of this article, but a good thing to plan in your application.</p>
+
+<p>My application code is <em>super tiny</em> comparativly, so there&rsquo;s very little I could do to <strong>reduce</strong> the side of my code&hellip; This is usually the least valuable way to spend your time.  Better to remove or delay a bunch first.</p>
+
+<p>Ok&hellip; What can I <strong>delay</strong>, and what are the ramifications of doing so?</p>
+
+<p>Basically you want to look for things which are only used once or twice,
+but which have a heavy footprint.</p>
+
+<p>In this case, <code>react-dates</code> is a great candidate, because I <strong>only use it once</strong> in my codebase, but <strong>it&rsquo;s got a huge footprint</strong> in the clientside bundle.</p>
+
+<p>Other things to consider:
+- is the component required to make the initial page render look ok to the user?
+- is the lack of that component going to mess things up for server side rendering?
+- is the page going to significantly <em>jump</em> when the component gets loaded dynamically, after the rest of the page has rendered?</p>
+
+<h3 id="optimize-with-a-dynamic-import">Optimize with a dynamic import</h3>
+
+<p>Since we decided to target <code>react-dates</code> I am going to dynamicly load the only component which uses it.</p>
+
+<p>I could do this several ways, but here&rsquo;s a fairly simple one.</p>
+
+<p>First I install a super-useful helper <a href="https://github.com/thejameskyle/react-loadable">react-loadable</a>, which handles the loading react component</p>
+
+<pre><code class="language-sh">meteor npm install --save react-loadable
+</code></pre>
+
+<p><strong>before: normal import</strong> part of clientside bundle</p>
+
+<pre><code class="language-js">import PickDates from './PickDates';
+</code></pre>
+
+<p><strong>after: dynamic import</strong> no longer a part of clientside bundle</p>
+
+<pre><code class="language-js">import Loader from 'react-loader';
+
+// generic loading component to show while transfering section of code
+const LoadingComponent = () =&gt; &lt;span className=&quot;text-muted&quot;&gt;&lt;i className=&quot;fa fa-refresh&quot; /&gt;&lt;/span&gt;;
+// new version of the component, now: loading --&gt; rendered
+const PickDates = Loader({
+  // this does the dynamic import, and returns a promise
+  loader: () =&gt; import('./PickDates'),
+  // this is our generic loading display (optional)
+  LoadingComponent,
+  // this is a delay before we decide to show our LoadingComponent (optional)
+  delay: 200,
+});
+</code></pre>
+
+<p>This is a bit of a simple answer, it can get a lot more complex&hellip; but in short:
+<code>react-loader</code> will render our component when it&rsquo;s available.
+The <code>loader</code> function recieves a promise which resolves as soon as the dynamic import is done.
+The <code>import(&lt;path&gt;)</code> is the where the magic happens.</p>
+
+<p>Because the <code>import</code> is no longer part of the initial clientside bundle,
+it is compiled with all of it&rsquo;s dependancies, seperately.
+They will be loaded later, the first time they are used, and then cached on the client. <em>(more on this later)</em></p>
+
+<h3 id="after-our-dynamic-import">After our dynamic import</h3>
+
+<blockquote>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a> and checkout the <code>04-after-optimization</code> branch.</p>
+</blockquote>
+
+<p>Did it do anything?  Lets profile again.</p>
+
+<pre><code class="language-sh">npm run start-as-prod
+# ^ if you don't have my package.json scripts, you would run
+#   meteor --production
+</code></pre>
+
+<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;|
+| JS bundle             | size   |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;|
+| before dynamic import | 494 KB |
+| after dynamic import  | 459 KB |
+|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;+&mdash;&mdash;&ndash;|</p>
+
+<p><img src="https://puu.sh/w85w8/40aaf947e5.png" alt="after-dynamic-import-network-tab" /></p>
+
+<p>And how about our sundial?</p>
+
+<p><img src="https://media.giphy.com/media/3og0IwwJqrZwK8JlMQ/giphy.gif" alt="after-dynamic-import-bundle" /></p>
+
+<p>It looks like we no longer have the <code>react-dates</code> module at all&hellip;</p>
+
+<p>But if I get rid of the <code>bundle-visualizer</code> then I can see it working&hellip;</p>
+
+<pre><code class="language-sh">meteor remove bundle-visualizer
+</code></pre>
+
+<p><img src="https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif" alt="after-dynamic-import-still-working" /></p>
+
+<h3 id="so-how-does-it-work">So how does it work?</h3>
+
+<p>Where is did the component go?  How does it work?</p>
+
+<p>If you use the <em>Developer Tools &gt; Network tab &gt; WS (websocket)</em> and look at the frames,
+you can find a request for the dynamic import,
+and the response with the dynamic import payload.</p>
+
+<p><img src="https://media.giphy.com/media/3ohzdZbi1jPbNlx9Ty/giphy.gif" alt="find-dynamic-imports-in-frames" /></p>
+
+<p><img src="https://puu.sh/w86fn/6d86a850a7.png" alt="request" />
+<img src="https://puu.sh/w86gK/3819c7813f.png" alt="response" /></p>
+
+<p>That&rsquo;s actually kind of big!</p>
+
+<p>But it is cached, and it only is loaded when it&rsquo;s needed.</p>
+
+<h3 id="experiments-what-can-you-do">Experiments - what can you do?</h3>
+
+<p>WIP</p>
+
+<ul class="task-list">
+<li><input type="checkbox" checked disabled class="task-list-item"> import as in-file functions</li>
+<li><input type="checkbox" disabled class="task-list-item"> import as shared functions</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> import as shared function, but in-file loader</li>
+<li><input type="checkbox" disabled class="task-list-item"> import a npm package</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> import a component that imports a component</li>
+</ul>
+
+<h3 id="summary">Summary</h3>
+
+<p>[meteor]: <a href="https://meteor.com/">https://meteor.com/</a> Meteor JS Framework
+[meteor-1.5]: <a href="https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb">https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb</a> Meteor v 1.5
+[meteorchef]: <a href="https://themeteorchef.com/">https://themeteorchef.com/</a> The Meteor Chef</p>
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+
+    
+    
+</ul>
+
+    </footer>
+</article>
+<ul class="actions pagination">
+    
+
+    
+</ul>
+
+
+
+    
+        <article class="post">
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zeroasterisk';
+    var disqus_identifier = 'https:\/\/code.zeroasterisk.com\/post\/2017-05-31-meteor-1-5-optimization-examples\/';
+    var disqus_title = '';
+    var disqus_url = 'https:\/\/code.zeroasterisk.com\/post\/2017-05-31-meteor-1-5-optimization-examples\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </article>
+    
+
+
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+                
+                    <a href="/" class="logo"><img src="/img/main/alan.jpg" alt="Alan Blount" /></a>
+                
+            
+            
+                <header>
+                    <h2>Aquire Superpowers - learn to code</h2>
+                    <p>I feel really lucky to be a programmer. It's fun. It pays well. I end up with skills <em>(aka superpowers)</em> I can apply to my own projects.  Want some of these superpowers? <a href="/start-learning">Start Learning</a> here or anywhere. <i class='fa fa-hand-peace-o'></i></p>
+                </header>
+            
+            <ul class="icons">
+                
+                
+                    
+<li><a href="//github.com/zeroasterisk" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+<li><a href="//jsfiddle.com/zeroasterisk" target="_blank" title="JSFiddle" class="fa fa-jsfiddle"></a></li>
+
+
+
+<li><a href="//codepen.io/zeroasterisk" target="_blank" title="CodePen" class="fa fa-codepen"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//youtube.com/zeroasterisk" target="_blank" title="YouTube" class="fa fa-youtube"></a></li>
+
+
+
+
+
+
+
+<li><a href="//medium.com/@zeroasterisk" target="_blank" title="Medium" class="fa fa-medium"></a></li>
+
+
+
+
+
+
+
+
+
+<li><a href="//linkedin.com/in/alan.blount" target="_blank" title="LinkedIn" class="fa fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//plus.google.com/+zeroasterisk" target="_blank" title="Google+" class="fa fa-google-plus"></a></li>
+
+
+
+
+
+<li><a href="//twitter.com/zeroasterisk" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+<li><a href="mailto:alan@zeroasterisk.com" title="Email" class="fa fa-envelope"></a></li>
+
+
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://code.zeroasterisk.com/post/2017-05-31-meteor-1-5-optimization-examples/"></a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="https://code.zeroasterisk.com/post/">Posts</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                /blog/
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="/categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+            </ul>
+        </section>
+    
+
+    
+        
+        <section class="blurb">
+            <h2>About</h2>
+            <p>My name is &lt;a href=&#34;/about/&#34;&gt;Alan Blount&lt;/a&gt;.  I&#39;ve been programming since 2000 and made my first webpage in high school in 1997.  Things have changed a lot since then.  I&#39;m going to try to keep up with parts of web development and devops tech and may share some of that here.  My goal is to end up being a developer advocate and help more people down this path.</p>
+
+            <ul class="actions">
+                <li><a href="/about/" class="button">Learn More</a></li>
+            </ul>
+        </section>
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+                    
+<li><a href="//github.com/zeroasterisk" target="_blank" title="GitHub" class="fa fa-github"></a></li>
+
+
+
+
+
+<li><a href="//jsfiddle.com/zeroasterisk" target="_blank" title="JSFiddle" class="fa fa-jsfiddle"></a></li>
+
+
+
+<li><a href="//codepen.io/zeroasterisk" target="_blank" title="CodePen" class="fa fa-codepen"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//youtube.com/zeroasterisk" target="_blank" title="YouTube" class="fa fa-youtube"></a></li>
+
+
+
+
+
+
+
+<li><a href="//medium.com/@zeroasterisk" target="_blank" title="Medium" class="fa fa-medium"></a></li>
+
+
+
+
+
+
+
+
+
+<li><a href="//linkedin.com/in/alan.blount" target="_blank" title="LinkedIn" class="fa fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//plus.google.com/+zeroasterisk" target="_blank" title="Google+" class="fa fa-google-plus"></a></li>
+
+
+
+
+
+<li><a href="//twitter.com/zeroasterisk" target="_blank" title="Twitter" class="fa fa-twitter"></a></li>
+
+
+
+<li><a href="mailto:alan@zeroasterisk.com" title="Email" class="fa fa-envelope"></a></li>
+
+
+                
+            </ul>
+
+            <p class="copyright">&copy; zeroasterisk talks code. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="/js/jquery.min.js"></script>
+            <script src="/js/skel.min.js"></script>
+            <script src="/js/util.js"></script>
+            <script src="/js/main.js"></script>
+            <script src="/js/backToTop.js"></script>
+            <script src="/js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+
