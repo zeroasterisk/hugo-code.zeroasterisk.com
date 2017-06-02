@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on zeroasterisk talks code</title>
+    <link>https://code.zeroasterisk.com/post/</link>
+    <description>Recent content in Posts on zeroasterisk talks code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://code.zeroasterisk.com/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://code.zeroasterisk.com/post/2017-05-31-meteor-1-5-optimization-examples/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/post/2017-05-31-meteor-1-5-optimization-examples/</guid>
+      <description>|-+-| author = &amp;ldquo;&amp;rdquo; categories = [] date = &amp;ldquo;2017-05-31T22:56:48-04:00&amp;rdquo; description = &amp;ldquo;&amp;rdquo; featured = &amp;ldquo;&amp;rdquo; featuredalt = &amp;ldquo;&amp;rdquo; featuredpath = &amp;ldquo;&amp;rdquo; linktitle = &amp;ldquo;&amp;rdquo; title = &amp;ldquo;2017 05 31 meteor 1 5 optimization examples&amp;rdquo;
++++
+I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&amp;hellip; make meteor faster for your users.</description>
+    </item>
+    
+  </channel>
+</rss>
