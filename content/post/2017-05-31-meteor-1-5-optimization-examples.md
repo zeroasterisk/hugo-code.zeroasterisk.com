@@ -301,7 +301,16 @@ meteor remove bundle-visualizer
 
 ![after-dynamic-import-still-working](https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif)
 
-# Understand:  So how does it work?
+## Gotcha: You have to dynamic import ALL references
+
+You could have `MyComponent` and `OtherComponent`, both of which included `react-dates`.
+
+The `react-dates` section of code would only be removed from the initial clientside bundle
+if both `MyComponent` and `OtherComponent` were dynamically imported.
+
+**Any static import, ensures the component and all decendants are in the clientside bundle.**
+
+# Understand: So how does it work?
 
 Where is did the component go?  How does it work?
 
@@ -316,14 +325,59 @@ and the response with the dynamic import payload.
 
 That's actually kind of a **big** frame!
 
-But it _is cached_, and it only is loaded when it's needed.
+But it _is cached_, websocket transfer is pretty fast, and it only is loaded when it's needed.
 
-# Experiments - what can you do?
+## Keep this in mind: Dynamic Imports are not Free
+
+The dynamic import does make the section of code disappear from your clientside bundle.
+
+It does "improve" the profiled metrics... but it has a few costs:
+
+* starting meteor is a wee bit slower _(sorry devs)_
+* added complexity
+* bundle over websocket can not be offloaded to a CDN
+* dynamic imports are not _(currently)_ profileable... so to profile you'd have to make static imports again.
+
+## Next Level Optimize: Unify Loaded Dependancies
+
+> TL;DR import smaller chunks of code and dependancy, for greater re-use and simpler scoping
+
+If I had the following component tree:
+
+```
+- MyPage
+  - Trunk
+    - Limb
+      - Branch
+        - Twig
+          - Stem
+            - Leaf
+```
+
+I could dynamicly import any of those levels...
+but the further up that tree _(the closer to the trunk)_
+the **bigger** my dynamic imported section of code is.
+
+If we import `Limb` we get `Limb - Leaf` in 1 bundle.
+
+If we later dynamically import `Twig` from some other page, we get `Twig - Leaf` in a _(different)_ 2nd bundle.
+
+This means that we have just duplicated code, bundled it twice.
+
+The obvious solution for this, would be to ensure tat `Branch` also used **the same dynamic import** for `Twig`.
+
+As long as the dynamic import is the same, it gets re-used.
+
+As soon as you dynamic import a tree of dependencies, you get every dependency, possibly duplicated.
+
+# Experiment: What can you do with dynamic imports?
 
 > You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
 > and checkout the `05-experiments` branch.
 
 I felt like trying out a few more variations on how things can be loaded.
+
+**Work In Progress, more coming soon**
 
 - [x] import as in-file functions
 - [ ] import as shared functions
