@@ -10,5 +10,32 @@
 	<atom:link href="https://code.zeroasterisk.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title>Meteor</title>
+      <link>https://code.zeroasterisk.com/categories/meteor/</link>
+      <pubDate>Wed, 31 May 2017 22:56:48 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/meteor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Optimization</title>
+      <link>https://code.zeroasterisk.com/categories/optimization/</link>
+      <pubDate>Wed, 31 May 2017 22:56:48 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/optimization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>React</title>
+      <link>https://code.zeroasterisk.com/categories/react/</link>
+      <pubDate>Wed, 31 May 2017 22:56:48 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/react/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

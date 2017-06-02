@@ -2,7 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://code.zeroasterisk.com/post/2017-05-31-meteor-1-5-optimization-examples/</loc>
+    <loc>https://code.zeroasterisk.com/2017/05/meteor-1.5-~-bundle-optimization---examples/</loc>
+    <lastmod>2017-05-31T22:56:48-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://code.zeroasterisk.com/archives/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -11,7 +17,26 @@
   </url>
   
   <url>
+    <loc>https://code.zeroasterisk.com/categories/meteor/</loc>
+    <lastmod>2017-05-31T22:56:48-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.zeroasterisk.com/categories/optimization/</loc>
+    <lastmod>2017-05-31T22:56:48-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://code.zeroasterisk.com/post/</loc>
+    <lastmod>2017-05-31T22:56:48-04:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.zeroasterisk.com/categories/react/</loc>
+    <lastmod>2017-05-31T22:56:48-04:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -22,6 +47,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/</loc>
+    <lastmod>2017-05-31T22:56:48-04:00</lastmod>
     <priority>0</priority>
   </url>
   
