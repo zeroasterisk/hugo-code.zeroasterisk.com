@@ -4,7 +4,7 @@ title = "zeroasterisk talks code"
 theme = "tranquilpeak"
 preserveTaxonomyNames = true
 paginate = 7
-disqusShortname = "alanblount"
+disqusShortname = "zeroasterisk"
 googleAnalytics = "UA-2011466-10"
 canonifyurls = true
 
