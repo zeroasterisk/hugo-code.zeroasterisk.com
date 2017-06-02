@@ -1,45 +1,57 @@
-+++
-author = "alan blount"
-categories = ["meteor", "optimization", "react"]
-date = "2017-05-31T22:56:48-04:00"
-description = "deep dive into Meteor 1.5 dynamic imports. When, how, and why."
-featured = ""
-featuredalt = ""
-featuredpath = ""
-linktitle = ""
-title = "Meteor 1.5 ~ Bundle Optimization + Examples"
+---
 
-+++
+slug: "meteor-1-5-bundle-optimization"
+title: "Meteor 1.5 ~ Bundle Optimization + Examples"
+date: 2017-05-31
+author: "alan blount"
+categories:
+- code learning
+tags:
+- meteor
+- es7
+- import
+- optimization
+- react
+autoThumbnailImage: false
+thumbnailImagePosition: "top"
+description: "deep dive into Meteor 1.5 dynamic imports. When, how, and why."
 
-I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle... make meteor faster for your users.
+---
+
+I have been playing with [Meteor](https://meteor.com/) 1.5 release candidates and
+I thought this would be a great topic for a quick article on
+how to optimize your clientside bundle... make meteor faster for your users.
+
 <!--more-->
 
 <!-- toc -->
 
-> If you're not already familiar with Meteor you should checkout [the meteor website][meteor] and also [the meteor chef][meteorchef]
+> If you're not already familiar with Meteor you should checkout [the meteor website](https://meteor.com/) and also [the meteor chefmeteorchef](https://themeteorchef.com/)
 
-[Meteor 1.5 landed][meteor-1.5], and it's got a lot of fantastic features,
+[Meteor 1.5 landed](https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb),
+and it's got a lot of fantastic features,
 but I think the big one that people want to know about is
-**the ability to dynamicaly import code**.
+**the ability to dynamically import code**.
 
-What is that?  Why is it useful?  How do I do it?  How do I know what to dynamicly import?
+What is that?  Why is it useful?  How do I do it?  How do I know what to dynamically import?
 
 Well, this is a bit of a deep dive into some of those questions, and how to use these new tools to improve your application's load time.
 
 This post is **about identifying what to optimize and how to optimize**...
-I will do another about how to develop better dynamicly imported components.
+I will do another about how to develop better dynamically imported components.
 
 # Setup a Basic Meteor Project
 
-> You can clone [this repo][example-repo] and checkout the `01-initial` branch.
+> You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
+> and checkout the `01-initial` branch.
 > Or you can use the following instructions to get up to this starting point.
 > Or you can jump right into this topic on your own project.
 
 To do anything, we need a simple test project.
-I am starting with [Meteor Chef Base][meteorchefbase]
-and I am adding [react-dates][react-dates] and a bit of functionality
-to pick date ranges
-_(I also happen to know it has a noticable impact on bundle size, which we will see later)_.
+I am starting with [Meteor Chef Base](https://github.com/themeteorchef/base)
+and I am adding [react-dates](https://github.com/airbnb/react-dates)
+and a bit of functionality to pick date ranges
+_(I also happen to know it has a noticeable impact on bundle size, which we will see later)_.
 
 
 ```sh
@@ -61,7 +73,8 @@ Not terrible for a quick example _(and not a todo list)_.
 
 # Goal: Reduce Time to Initial Render
 
-> You can clone [this repo][example-repo] and checkout the `02-before-optimization` branch.
+> You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
+> and checkout the `02-before-optimization` branch.
 
 Make things faster, always.
 Initial render of the site/app is a *great* metric to improve on
@@ -69,8 +82,8 @@ and one of the pain points for meteor apps.
 
 Why?  When in production mode, Meteor builds all of your app into 1 big JS and 1 big CSS file - these are called the *"client bundle"*.
 
-Meteor does it's best to minimize those files, and cache them... but it can still be a whole lot of stuff sent to the client (this is all of your code and your code's dependancies) on initial pageload...
-Especially if you don't always need some of those components and dependancies.
+Meteor does it's best to minimize those files, and cache them... but it can still be a whole lot of stuff sent to the client (this is all of your code and your code's dependencies) on initial pageload...
+Especially if you don't always need some of those components and dependencies.
 
 To test and profile, *we have to run in production mode*,
 as if we had deployed to a server.
@@ -90,7 +103,7 @@ Our biggest slowdown by far is the bundle of all javascript.
 
 Wow, but this is such a tiny application... what can we do?
 
-# Profile Profile Profile....
+# Plan: Profile to Determine Work to be Done
 
 You should never optimize without profiling.
 
@@ -98,7 +111,7 @@ Sure, when you develop keep performance and optimization in mind - use best prac
 But when you are trying to figure out how you can improve performance, you should use tools to profile and get information about what to optimize.
 Without that profiling information, you will be treading water, spending lots of effort for little value.
 
-# How to Profile Meteor JavaScript Bundle?
+## How to Profile Meteor JavaScript Bundle?
 
 So we know we need to reduce the total JavaScript Bundle... but how?
 What's Big?
@@ -106,8 +119,9 @@ What's easy to remove?
 What's not used?
 
 Luckily, there is a now a
-[bundle-visualizer][bundle-visualizer] package which gives us an awesome
-sundail graph for identifying size in our initial load.
+[bundle-visualizer](https://atmospherejs.com/meteor/bundle-visualizer)
+package which gives us an awesome
+sundial graph for identifying size in our initial load.
 
 ```sh
 meteor add bundle-visualizer
@@ -140,46 +154,81 @@ Real quick review of some numbers here:
 
 My entire app code is `32k` which is only `1.7%` of the clientside bundle!
 
-# Pick high value targets - sections to remove, reduce, or delay
+## How can we optimize?
 
-Armed with this information, we try to identify a section of code we can reduce from our bundle.
+So we can look at our codebase in _sections_ and do something...
 
-We start by looking at the "biggest" sections of code (clockwise),
-and for each section we try to ask ourselves if we can **remove** or **reduce** or **delay** loading.
+_What exactly will we even be doing?_
 
-1. **remove** from our project entirely (best solution, but not often possible)
-2. **reduce** _significantly_ the size of a section (micro optimization, not usually effective)
-3. **delay** loading a section via **dynamic import** (our new option)
+It really comes down to 3 options:
 
-In this example, I could **remove** `jquery` or `handlebars` becaue I'm not using it... but Meteor Chef Base is... This is outside of the scope of this article, but a good thing to plan in your application.
+1. **remove** a section of code from our project entirely _(best solution, but not often possible)_
+2. **reduce** the size of a section _(micro optimization, not usually effective)_
+3. **delay** loading a section via **dynamic import** _(our new option)_
 
-My application code is *super tiny* comparativly, so there's very little I could do to **reduce** the side of my code... This is usually the least valuable way to spend your time.  Better to remove or delay a bunch first.
+### Remove
+
+In this example, I could **remove** `jquery` or `handlebars` because I'm not using it... but Meteor Chef Base is...
+
+This is outside of the scope of this article.  If you can remove code, do so.
+
+### Reduce
+
+There's very little I could do to **reduce** the size of my code, my application code is *super tiny*.
+
+This is usually the least valuable way to spend your time.  Better to remove or delay a bunch first.
+
+### Delay
 
 Ok... What can I **delay**, and what are the ramifications of doing so?
 
 Basically you want to look for things which are only used once or twice,
 but which have a heavy footprint.
 
+## Pick high value targets - sections to delay
+
+Armed with a profile of code sections _(size)_,
+we try to identify a what we can remove from our initial bundle, and only load as needed.
+
+We start by looking at the "biggest" sections of code _(clockwise)_,
+and for each section we try to ask ourselves if we can **remove** or **delay** loading.
+
+**Pro Delay:**
+
+* Is the section of code used only once or in a very few components?
+* Is the section of code an optional "secondary" feature?
+* Is the section of code a big enough percentage of the bundle to make it worthwhile?
+
+**Against Delay:**
+
+* Is the component required to make the initial page render look ok to the user?
+* Is the page going to significantly *jump* when the component gets loaded dynamically, after the rest of the page has rendered?
+* Is the lack of that component going to mess things up for server side rendering?
+
 In this case, `react-dates` is a great candidate, because I **only use it once** in my codebase, but **it's got a huge footprint** in the clientside bundle.
 
-Other things to consider:
-- is the component required to make the initial page render look ok to the user?
-- is the lack of that component going to mess things up for server side rendering?
-- is the page going to significantly *jump* when the component gets loaded dynamically, after the rest of the page has rendered?
+> Note: I'm using [ag (the silver searcher)](https://github.com/ggreer/the_silver_searcher) or [rg (ripgrep)](https://github.com/BurntSushi/ripgrep) to search through file contents, lightning fast.
 
-# Optimize with a dynamic import
+```sh
+$ ag 'react-dates' imports -c
+imports/ui/components/PickDates.js:1
+```
 
-Since we decided to target `react-dates` I am going to dynamicly load the only component which uses it.
 
-I could do this several ways, but here's a fairly simple one.
+# Optimize: delay loading code with a dynamic import
 
-First I install a super-useful helper [react-loadable][react-loadable], which handles the loading react component
+Since we decided to target `react-dates`,
+I am going to dynamically load the only component which uses it, `PickDates`.
+
+I could do this several ways, but here's a very simple approach.
+
+First I install a super-useful helper
+[react-loadable](https://github.com/thejameskyle/react-loadable),
+which handles the _"maybe I'm loading, maybe I'm loaded"_ react component.
 
 ```sh
 meteor npm install --save react-loadable
 ```
-
-
 **before: normal import** part of clientside bundle
 
 ```js
@@ -204,18 +253,24 @@ const PickDates = Loader({
 });
 ```
 
-This is a bit of a simple answer, it can get a lot more complex... but in short:
-`react-loader` will render our component when it's available.
-The `loader` function recieves a promise which resolves as soon as the dynamic import is done.
-The `import(<path>)` is the where the magic happens.
+It can get a lot more complex, but this is a fine place to start.
+
+1. `react-loader` is a [HOC](https://facebook.github.io/react/docs/higher-order-components.html)
+which will render our component when it's available.
+2. The `loader: <func>` function recieves a promise which resolves as soon as the dynamic import is done.
+3. The `import(<path>)` is the where the actual dynamic import _(magic)_ happens.
+It returns a promise which resolves when the component is on the client.
+4. The `LoadingComponent` shows while the component is not yet loaded.
+5. The `delay` hides the `LoadingComponent` for this long, so there is less flicker in case the component is already cached and can just load-in super fast.
 
 Because the `import` is no longer part of the initial clientside bundle,
 it is compiled with all of it's dependancies, seperately.
 They will be loaded later, the first time they are used, and then cached on the client. _(more on this later)_
 
-# After our dynamic import
+# Review: After our dynamic import
 
-> You can clone [this repo][example-repo] and checkout the `04-after-optimization` branch.
+> You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
+> and checkout the `04-after-optimization` branch.
 
 Did it do anything?  Lets profile again.
 
@@ -238,7 +293,7 @@ And how about our sundial?
 
 It looks like we no longer have the `react-dates` module at all...
 
-But if I get rid of the `bundle-visualizer` then I can see it working...
+But if I get rid of the `bundle-visualizer` then I can see our date picker working...
 
 ```sh
 meteor remove bundle-visualizer
@@ -246,7 +301,7 @@ meteor remove bundle-visualizer
 
 ![after-dynamic-import-still-working](https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif)
 
-# So how does it work?
+# Understand:  So how does it work?
 
 Where is did the component go?  How does it work?
 
@@ -259,13 +314,16 @@ and the response with the dynamic import payload.
 ![request](https://puu.sh/w86fn/6d86a850a7.png)
 ![response](https://puu.sh/w86gK/3819c7813f.png)
 
-That's actually kind of big!
+That's actually kind of a **big** frame!
 
-But it is cached, and it only is loaded when it's needed.
+But it _is cached_, and it only is loaded when it's needed.
 
 # Experiments - what can you do?
 
-WIP
+> You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
+> and checkout the `05-experiments` branch.
+
+I felt like trying out a few more variations on how things can be loaded.
 
 - [x] import as in-file functions
 - [ ] import as shared functions
@@ -275,10 +333,22 @@ WIP
 
 # Summary
 
+You can now segment your meteor clientside codebase.
 
-[meteor]: https://meteor.com/ Meteor JS Framework
-[meteor-1.5]: https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb Meteor v 1.5
-[meteorchef]: https://themeteorchef.com/ The Meteor Chef
-[example-repo]: https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git
-[react-dates]: https://github.com/airbnb/react-dates
-[react-loadable]: https://github.com/thejameskyle/react-loadable
+* You can make an admin section, only load when needed.
+* You can make every route, only load when needed.
+* Or better, you can dynamically load individual components... *(especially expensive ones)*
+
+# Thanks & Credits
+
+Huge thanks to Meteor, MDG, and especially [ben](https://github.com/benjamn/)... I've been learning a lot just by reading your commits, and I am grateful for your contributions.
+
+Also a huge thanks to [jesse](https://github.com/abernix) for the bundle-visualizer and all your other meteor work.
+
+Definitly read [the Meteor Blog Post](https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb) and maybe the [huge pull request](https://github.com/meteor/meteor/pull/8327) for information about dynamic imports.
+
+I've also played with code from meteor's [react-loadable example](https://github.com/meteor/react-loadable-example) which helped me to understand dynamic imports.
+
+Other good reading, [webpack's dynamic import](https://webpack.js.org/guides/code-splitting-async/) docs are useful too.
+
+
