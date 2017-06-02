@@ -230,11 +230,20 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>I have been playing with <a href="https://meteor.com/">Meteor</a> 1.5 release candidates and
-I thought this would be a great topic for a quick article on
-how to optimize your clientside bundle&hellip; make meteor faster for your users.</p>
+              <p>I have been playing with <a href="https://meteor.com/">Meteor</a> 1.5 and it&rsquo;s dynamic imports,
+which can be used to reduce the amount of javascript code sent to the browser.</p>
+
+<p>This article is a deep dive into how to profile and optimize your client side code
+to make smarter use of the new dynamic imports&hellip;</p>
+
+<p>Which will make <strong>meteor load faster for your users</strong>.</p>
 
 <p></p>
+
+<blockquote>
+<p>If you&rsquo;re not already familiar with Meteor you should checkout the <a href="https://meteor.com/">meteor website</a> and the <a href="https://themeteorchef.com/">meteor chef</a>
+Come back to this when you&rsquo;re comfortable and want to optimize an existing application.</p>
+</blockquote>
 
 <h1 id="table-of-contents"></h1><nav id="TableOfContents">
 <ul>
@@ -259,7 +268,7 @@ how to optimize your clientside bundle&hellip; make meteor faster for your users
 <li><a href="#understand-so-how-does-it-work">Understand: So how does it work?</a>
 <ul>
 <li><a href="#keep-this-in-mind-dynamic-imports-are-not-free">Keep this in mind: Dynamic Imports are not Free</a></li>
-<li><a href="#next-level-optimize-unify-loaded-dependancies">Next Level Optimize: Unify Loaded Dependancies</a></li>
+<li><a href="#next-level-optimize-unify-loaded-dependencies">Next Level Optimize: Unify Loaded Dependencies</a></li>
 </ul></li>
 <li><a href="#experiment-what-can-you-do-with-dynamic-imports">Experiment: What can you do with dynamic imports?</a></li>
 <li><a href="#summary">Summary</a></li>
@@ -267,21 +276,22 @@ how to optimize your clientside bundle&hellip; make meteor faster for your users
 </ul>
 </nav>
 
-<blockquote>
-<p>If you&rsquo;re not already familiar with Meteor you should checkout <a href="https://meteor.com/">the meteor website</a> and also <a href="https://themeteorchef.com/">the meteor chefmeteorchef</a></p>
-</blockquote>
-
 <p><a href="https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb">Meteor 1.5 landed</a>,
-and it&rsquo;s got a lot of fantastic features,
-but I think the big one that people want to know about is
+and it&rsquo;s got a lot of improvements,
+but I think the big new feature that people want to know about is
 <strong>the ability to dynamically import code</strong>.</p>
 
-<p>What is that?  Why is it useful?  How do I do it?  How do I know what to dynamically import?</p>
+<blockquote>
+<p>What is that?<br/>
+Why is it useful?<br/>
+How do I do it?<br/>
+How do I know what to dynamically import?</p>
+</blockquote>
 
-<p>Well, this is a bit of a deep dive into some of those questions, and how to use these new tools to improve your application&rsquo;s load time.</p>
+<p>Well, lets look into some of those questions, and how to use these new tools to improve your application&rsquo;s load time.</p>
 
 <p>This post is <strong>about identifying what to optimize and how to optimize</strong>&hellip;
-I will do another about how to develop better dynamically imported components.</p>
+I will do another about how to develop/architect better dynamically imported components.</p>
 
 <h1 id="setup-a-basic-meteor-project">Setup a Basic Meteor Project</h1>
 
@@ -325,13 +335,12 @@ and checkout the <code>02-before-optimization</code> branch.</p>
 Initial render of the site/app is a <em>great</em> metric to improve on
 and one of the pain points for meteor apps.</p>
 
-<p>Why?  When in production mode, Meteor builds all of your app into 1 big JS and 1 big CSS file - these are called the <em>&ldquo;client bundle&rdquo;</em>.</p>
+<p>When in <em>production</em> mode, Meteor builds all of your app into 1 big JS and 1 big CSS file - these are called the <em>&ldquo;client bundle&rdquo;</em>.</p>
 
 <p>Meteor does it&rsquo;s best to minimize those files, and cache them&hellip; but it can still be a whole lot of stuff sent to the client (this is all of your code and your code&rsquo;s dependencies) on initial pageload&hellip;
 Especially if you don&rsquo;t always need some of those components and dependencies.</p>
 
-<p>To test and profile, <em>we have to run in production mode</em>,
-as if we had deployed to a server.</p>
+<p>To test and profile, <strong>we have to run in production mode</strong>.</p>
 
 <p><code>meteor --production</code></p>
 
@@ -358,7 +367,7 @@ as if we had deployed to a server.</p>
 <tr>
 <td>CSS bundle</td>
 <td>7 KB</td>
-<td>2 ms</td>
+<td>29 ms</td>
 </tr>
 </tbody>
 </table>
@@ -568,7 +577,7 @@ It returns a promise which resolves when the component is on the client.</li>
 </ol>
 
 <p>Because the <code>import</code> is no longer part of the initial clientside bundle,
-it is compiled with all of it&rsquo;s dependancies, seperately.
+it is compiled with all of it&rsquo;s dependencies, separately.
 They will be loaded later, the first time they are used, and then cached on the client. <em>(more on this later)</em></p>
 
 <h1 id="review-after-our-dynamic-import">Review: After our dynamic import</h1>
@@ -628,7 +637,7 @@ and checkout the <code>04-after-optimization</code> branch.</p>
 <p>The <code>react-dates</code> section of code would only be removed from the initial clientside bundle
 if both <code>MyComponent</code> and <code>OtherComponent</code> were dynamically imported.</p>
 
-<p><strong>Any static import, ensures the component and all decendants are in the clientside bundle.</strong></p>
+<p><strong>Any static import, ensures the component and all descendants are in the clientside bundle.</strong></p>
 
 <h1 id="understand-so-how-does-it-work">Understand: So how does it work?</h1>
 
@@ -660,10 +669,10 @@ and the response with the dynamic import payload.</p>
 <li>dynamic imports are not <em>(currently)</em> profileable&hellip; so to profile you&rsquo;d have to make static imports again.</li>
 </ul>
 
-<h2 id="next-level-optimize-unify-loaded-dependancies">Next Level Optimize: Unify Loaded Dependancies</h2>
+<h2 id="next-level-optimize-unify-loaded-dependencies">Next Level Optimize: Unify Loaded Dependencies</h2>
 
 <blockquote>
-<p>TL;DR import smaller chunks of code and dependancy, for greater re-use and simpler scoping</p>
+<p>TL;DR import smaller chunks of code and dependency, for greater re-use and simpler scoping</p>
 </blockquote>
 
 <p>If I had the following component tree:</p>
@@ -677,7 +686,7 @@ and the response with the dynamic import payload.</p>
             - Leaf
 </code></pre>
 
-<p>I could dynamicly import any of those levels&hellip;
+<p>I could dynamically import any of those levels&hellip;
 but the further up that tree <em>(the closer to the trunk)</em>
 the <strong>bigger</strong> my dynamic imported section of code is.</p>
 
@@ -687,9 +696,9 @@ the <strong>bigger</strong> my dynamic imported section of code is.</p>
 
 <p>This means that we have just duplicated code, bundled it twice.</p>
 
-<p>The obvious solution for this, would be to ensure tat <code>Branch</code> also used <strong>the same dynamic import</strong> for <code>Twig</code>.</p>
+<p>The obvious solution for this, would be to ensure that <code>Branch</code> also used <strong>the same dynamic import</strong> for <code>Twig</code>.</p>
 
-<p>As long as the dynamic import is the same, it gets re-used.</p>
+<p>As long as the dynamic import is the same, everywhere it is used, it gets re-used.</p>
 
 <p>As soon as you dynamic import a tree of dependencies, you get every dependency, possibly duplicated.</p>
 
@@ -697,19 +706,19 @@ the <strong>bigger</strong> my dynamic imported section of code is.</p>
 
 <blockquote>
 <p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
-and checkout the <code>05-experiments</code> branch.</p>
+and checkout the <code>06-experiments</code> branch.</p>
 </blockquote>
 
 <p>I felt like trying out a few more variations on how things can be loaded.</p>
 
-<p><strong>Work In Progress, more coming soon</strong></p>
+<p><strong>This is a Work In Progress, more coming soon</strong></p>
 
 <ul class="task-list">
-<li><input type="checkbox" checked disabled class="task-list-item"> import as in-file functions</li>
-<li><input type="checkbox" disabled class="task-list-item"> import as shared functions</li>
-<li><input type="checkbox" checked disabled class="task-list-item"> import as shared function, but in-file loader</li>
-<li><input type="checkbox" disabled class="task-list-item"> import a npm package</li>
-<li><input type="checkbox" checked disabled class="task-list-item"> import a component that imports a component</li>
+<li><input type="checkbox" checked disabled class="task-list-item"> import as in-file function, and in-file loader <em>(works)</em></li>
+<li><input type="checkbox" checked disabled class="task-list-item"> import as shared function, but in-file loader <em>(works)</em></li>
+<li><input type="checkbox" disabled class="task-list-item"> import as shared function, path as arg <em>(fails, can not find the path)</em></li>
+<li><input type="checkbox" disabled class="task-list-item"> import a npm package directly <em>(fails)</em></li>
+<li><input type="checkbox" checked disabled class="task-list-item"> import a component that imports a component <em>(works, and a good idea, within reason)</em></li>
 </ul>
 
 <h1 id="summary">Summary</h1>
@@ -717,8 +726,9 @@ and checkout the <code>05-experiments</code> branch.</p>
 <p>You can now segment your meteor clientside codebase.</p>
 
 <ul>
-<li>You can make an admin section, only load when needed.</li>
-<li>You can make every route, only load when needed.</li>
+<li>You can profile and delay expensive components + dependencies</li>
+<li>You can make an admin section <em>(or whatever section)</em> of your site only load when needed.</li>
+<li>You can make every single route, only load when needed <em>(sub-optimal, but effective, temporarily)</em>.</li>
 <li>Or better, you can dynamically load individual components&hellip; <em>(especially expensive ones)</em></li>
 </ul>
 
@@ -728,7 +738,7 @@ and checkout the <code>05-experiments</code> branch.</p>
 
 <p>Also a huge thanks to <a href="https://github.com/abernix">jesse</a> for the bundle-visualizer and all your other meteor work.</p>
 
-<p>Definitly read <a href="https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb">the Meteor Blog Post</a> and maybe the <a href="https://github.com/meteor/meteor/pull/8327">huge pull request</a> for information about dynamic imports.</p>
+<p>Definitely read <a href="https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb">the Meteor Blog Post</a> and maybe the <a href="https://github.com/meteor/meteor/pull/8327">huge pull request</a> for information about dynamic imports.</p>
 
 <p>I&rsquo;ve also played with code from meteor&rsquo;s <a href="https://github.com/meteor/react-loadable-example">react-loadable example</a> which helped me to understand dynamic imports.</p>
 
@@ -985,9 +995,13 @@ and checkout the <code>05-experiments</code> branch.</p>
                   May 5, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather"><p>I have been playing with <a href="https://meteor.com/">Meteor</a> 1.5 release candidates and
-I thought this would be a great topic for a quick article on
-how to optimize your clientside bundle&hellip; make meteor faster for your users.</p>
+              <div class="media-content hide-xs font-merryweather"><p>I have been playing with <a href="https://meteor.com/">Meteor</a> 1.5 and it&rsquo;s dynamic imports,
+which can be used to reduce the amount of javascript code sent to the browser.</p>
+
+<p>This article is a deep dive into how to profile and optimize your client side code
+to make smarter use of the new dynamic imports&hellip;</p>
+
+<p>Which will make <strong>meteor load faster for your users</strong>.</p>
 
 <p></p></div>
             </div>

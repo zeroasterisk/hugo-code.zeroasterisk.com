@@ -17,9 +17,13 @@
       <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
       
       <guid>https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/</guid>
-      <description>&lt;p&gt;I have been playing with &lt;a href=&#34;https://meteor.com/&#34;&gt;Meteor&lt;/a&gt; 1.5 release candidates and
-I thought this would be a great topic for a quick article on
-how to optimize your clientside bundle&amp;hellip; make meteor faster for your users.&lt;/p&gt;
+      <description>&lt;p&gt;I have been playing with &lt;a href=&#34;https://meteor.com/&#34;&gt;Meteor&lt;/a&gt; 1.5 and it&amp;rsquo;s dynamic imports,
+which can be used to reduce the amount of javascript code sent to the browser.&lt;/p&gt;
+
+&lt;p&gt;This article is a deep dive into how to profile and optimize your client side code
+to make smarter use of the new dynamic imports&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;Which will make &lt;strong&gt;meteor load faster for your users&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
     </item>
