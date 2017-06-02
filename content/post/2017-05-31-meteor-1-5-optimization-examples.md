@@ -373,7 +373,7 @@ As soon as you dynamic import a tree of dependencies, you get every dependency, 
 # Experiment: What can you do with dynamic imports?
 
 > You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
-> and checkout the `05-experiments` branch.
+> and checkout the `06-experiments` branch.
 
 I felt like trying out a few more variations on how things can be loaded.
 
