@@ -18,7 +18,7 @@ canonifyurls = true
 
 [author]
   name = "Alan Blount"
-  bio = "Super bio with markdown support **COOL**"
+  bio = "**Learning to Code** is like **Aquiring Superpowers**.<br/><br/>If you are interested in being a better programmer, I'd like to help. I too am always trying to improve and learn new things.<br/><br/>_[We're in it together](http://imgur.com/7l3mEH9)_"
   job = "Programmer at arms"
   location = "Louisville, KY, USA"
   # Your Gravatar email. Overwrite `author.picture` everywhere in the blog
@@ -74,7 +74,7 @@ canonifyurls = true
   identifier = "stackoverflow"
   name = "Stack Overflow"
   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-stack-overflow\"></i>"
-  url = "https://stackoverflow.com/users/636472/zeroasterisk"
+  url = "https://stackoverflow.com/users/194105/zeroasterisk"
 
 [[menu.misc]]
   weight = 0
