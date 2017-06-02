@@ -252,9 +252,16 @@ how to optimize your clientside bundle&hellip; make meteor faster for your users
 <li><a href="#pick-high-value-targets-sections-to-delay">Pick high value targets - sections to delay</a></li>
 </ul></li>
 <li><a href="#optimize-delay-loading-code-with-a-dynamic-import">Optimize: delay loading code with a dynamic import</a></li>
-<li><a href="#review-after-our-dynamic-import">Review: After our dynamic import</a></li>
-<li><a href="#understand-so-how-does-it-work">Understand:  So how does it work?</a></li>
-<li><a href="#experiments-what-can-you-do">Experiments - what can you do?</a></li>
+<li><a href="#review-after-our-dynamic-import">Review: After our dynamic import</a>
+<ul>
+<li><a href="#gotcha-you-have-to-dynamic-import-all-references">Gotcha: You have to dynamic import ALL references</a></li>
+</ul></li>
+<li><a href="#understand-so-how-does-it-work">Understand: So how does it work?</a>
+<ul>
+<li><a href="#keep-this-in-mind-dynamic-imports-are-not-free">Keep this in mind: Dynamic Imports are not Free</a></li>
+<li><a href="#next-level-optimize-unify-loaded-dependancies">Next Level Optimize: Unify Loaded Dependancies</a></li>
+</ul></li>
+<li><a href="#experiment-what-can-you-do-with-dynamic-imports">Experiment: What can you do with dynamic imports?</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#thanks-credits">Thanks &amp; Credits</a></li>
 </ul>
@@ -614,7 +621,16 @@ and checkout the <code>04-after-optimization</code> branch.</p>
 
 <p><img src="https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif" alt="after-dynamic-import-still-working" /></p>
 
-<h1 id="understand-so-how-does-it-work">Understand:  So how does it work?</h1>
+<h2 id="gotcha-you-have-to-dynamic-import-all-references">Gotcha: You have to dynamic import ALL references</h2>
+
+<p>You could have <code>MyComponent</code> and <code>OtherComponent</code>, both of which included <code>react-dates</code>.</p>
+
+<p>The <code>react-dates</code> section of code would only be removed from the initial clientside bundle
+if both <code>MyComponent</code> and <code>OtherComponent</code> were dynamically imported.</p>
+
+<p><strong>Any static import, ensures the component and all decendants are in the clientside bundle.</strong></p>
+
+<h1 id="understand-so-how-does-it-work">Understand: So how does it work?</h1>
 
 <p>Where is did the component go?  How does it work?</p>
 
@@ -629,9 +645,55 @@ and the response with the dynamic import payload.</p>
 
 <p>That&rsquo;s actually kind of a <strong>big</strong> frame!</p>
 
-<p>But it <em>is cached</em>, and it only is loaded when it&rsquo;s needed.</p>
+<p>But it <em>is cached</em>, websocket transfer is pretty fast, and it only is loaded when it&rsquo;s needed.</p>
 
-<h1 id="experiments-what-can-you-do">Experiments - what can you do?</h1>
+<h2 id="keep-this-in-mind-dynamic-imports-are-not-free">Keep this in mind: Dynamic Imports are not Free</h2>
+
+<p>The dynamic import does make the section of code disappear from your clientside bundle.</p>
+
+<p>It does &ldquo;improve&rdquo; the profiled metrics&hellip; but it has a few costs:</p>
+
+<ul>
+<li>starting meteor is a wee bit slower <em>(sorry devs)</em></li>
+<li>added complexity</li>
+<li>bundle over websocket can not be offloaded to a CDN</li>
+<li>dynamic imports are not <em>(currently)</em> profileable&hellip; so to profile you&rsquo;d have to make static imports again.</li>
+</ul>
+
+<h2 id="next-level-optimize-unify-loaded-dependancies">Next Level Optimize: Unify Loaded Dependancies</h2>
+
+<blockquote>
+<p>TL;DR import smaller chunks of code and dependancy, for greater re-use and simpler scoping</p>
+</blockquote>
+
+<p>If I had the following component tree:</p>
+
+<pre><code>- MyPage
+  - Trunk
+    - Limb
+      - Branch
+        - Twig
+          - Stem
+            - Leaf
+</code></pre>
+
+<p>I could dynamicly import any of those levels&hellip;
+but the further up that tree <em>(the closer to the trunk)</em>
+the <strong>bigger</strong> my dynamic imported section of code is.</p>
+
+<p>If we import <code>Limb</code> we get <code>Limb - Leaf</code> in 1 bundle.</p>
+
+<p>If we later dynamically import <code>Twig</code> from some other page, we get <code>Twig - Leaf</code> in a <em>(different)</em> 2nd bundle.</p>
+
+<p>This means that we have just duplicated code, bundled it twice.</p>
+
+<p>The obvious solution for this, would be to ensure tat <code>Branch</code> also used <strong>the same dynamic import</strong> for <code>Twig</code>.</p>
+
+<p>As long as the dynamic import is the same, it gets re-used.</p>
+
+<p>As soon as you dynamic import a tree of dependencies, you get every dependency, possibly duplicated.</p>
+
+<h1 id="experiment-what-can-you-do-with-dynamic-imports">Experiment: What can you do with dynamic imports?</h1>
 
 <blockquote>
 <p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
@@ -639,6 +701,8 @@ and checkout the <code>05-experiments</code> branch.</p>
 </blockquote>
 
 <p>I felt like trying out a few more variations on how things can be loaded.</p>
+
+<p><strong>Work In Progress, more coming soon</strong></p>
 
 <ul class="task-list">
 <li><input type="checkbox" checked disabled class="task-list-item"> import as in-file functions</li>
