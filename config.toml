@@ -1,118 +1,174 @@
 baseURL = "https://code.zeroasterisk.com/"
 languageCode = "en-us"
 title = "zeroasterisk talks code"
-theme = "hugo-future-imperfect"
+theme = "tranquilpeak"
 preserveTaxonomyNames = true
-paginate = 3
+paginate = 7
 disqusShortname = "zeroasterisk"
 googleAnalytics = "UA-2011466-10"
+canonifyurls = true
+
+[permalinks]
+  post = "/:year/:month/:slug/"
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  archive = "archives"
+
+[author]
+  name = "Alan Blount"
+  bio = "Super bio with markdown support **COOL**"
+  job = "Programmer at arms"
+  location = "Louisville, KY, USA"
+  # Your Gravatar email. Overwrite `author.picture` everywhere in the blog
+  gravatarEmail = "alan@zeroasterisk.com"
+  # Your profile picture
+  # Overwritten by your gravatar image if `author.gravatarEmail` is filled
+  picture = ""
+  # Your Twitter username without the @. E.g : thibaudlepretre
+  twitter = "zeroasterisk"
+  # Your google plus profile id. E.g : +ThibaudLepretre or 114625208755123718311
+  googlePlus = "+zeroasterisk"
+
+# Menu Configuration
+[[menu.main]]
+  weight = 0
+  identifier = "home"
+  name = "Home"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-home\"></i>"
+  url = "/"
+# [[menu.main]]
+#   weight = 1
+#   identifier = "categories"
+#   name = "Categories"
+#   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-bookmark\"></i>"
+#   url = "/categories"
+[[menu.main]]
+  weight = 2
+  identifier = "tags"
+  name = "Tags"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-tags\"></i>"
+  url = "/tags"
+# [[menu.main]]
+#   weight = 3
+#   identifier = "archives"
+#   name = "Archives"
+#   pre = "<i class=\"sidebar-button-icon fa fa-lg fa-archive\"></i>"
+#   url = "/archives"
+[[menu.main]]
+  weight = 4
+  identifier = "about"
+  name = "About"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-question\"></i>"
+  url = "/#about"
+
+[[menu.links]]
+  weight = 0
+  identifier = "github"
+  name = "GitHub"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-github\"></i>"
+  url = "https://github.com/zeroasterisk"
+[[menu.links]]
+  weight = 1
+  identifier = "stackoverflow"
+  name = "Stack Overflow"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-stack-overflow\"></i>"
+  url = "https://stackoverflow.com/users/636472/zeroasterisk"
+
+[[menu.misc]]
+  weight = 0
+  identifier = "rss"
+  name = "RSS"
+  pre = "<i class=\"sidebar-button-icon fa fa-lg fa-rss\"></i>"
+  url = "/index.xml"
 
 [params]
-    # Sets the meta tag description, usually reserved for the main page
-    description          = "Aquire Superpowers - Let's all learn how to code/dev/devops"
-    # This will appear on the top left of the navigation bar
-    navbarTitle          = "Aquire Superpowers"
-    # Social media buttons that appear on the sidebar
-    socialAppearAtTop    = true
-    socialAppearAtBottom = true
-    # set this to the section name if section is not post
-    viewMorePostLink     = "/blog/"
+  # Customize date format use to render blog post date, categories and other
+  # You must use date format used by Go Time package https://golang.org/pkg/time/
+  # Months (not work with short month like "jan", "feb", etc) are translated if translation exists on i18n folders
+  # Default format is: January 2, 2006
+  # dateFormat = "2 January 2006"
 
-# Optional Params
-    categoriesByCount    = true
-    includeReadingTime   = true
-    # The set of favicons used are based on the write-up from this link:
-    # https://github.com/audreyr/favicon-cheat-sheet
-    # Please see the favicon partial template for more information
-    loadFavicon          = false
-    faviconVersion       = ""
+  # Global keywords configuration. Following keywords will be add to every pages
+  keywords = ["development", "code", "superpowers"]
 
-    # Load custom CSS or JavaScript files. This replaces the deprecated params
-    # minifiedFilesCSS and minifiedFilesJS. The variable is an array so that you
-    # can load multiple files if necessary. You can also load the standard theme
-    # files by adding the value, "default".
-    # customCSS            = ["default", "/path/to/file"]
-    # customJS             = ["default", "/path/to/file"]
+  # Hide sidebar on all article page to let article take full width to improve reading, and enjoy wide images and cover images. (true: enable, false: disable)
+  clearReading = true
 
-    # Loading min files for exampleSite
-    customCSS            = ["/css/main.min.css"]
-    customJS             = ["/js/main.min.js"]
+  # Define categories will create hierarchy between parents: `categories = ["foo", "bar"]` will consider "bar" a sub-category of "foo".
+  # If false it will flat categories.
+  hierarchicalCategories = true
 
-# parms.intro will appear on the sidebar
-# This is optional, but it's suggested to use
-[params.intro]
-    header    = "Aquire Superpowers - learn to code"
+  description = "Aquire Superpowers - Let's all learn how to code/dev/devops"
 
-    paragraph = "I feel really lucky to be a programmer. It's fun. It pays well. I end up with skills <em>(aka superpowers)</em> I can apply to my own projects.  Want some of these superpowers? <a href=\"/start-learning\">Start Learning</a> here or anywhere. <i class='fa fa-hand-peace-o'></i>"
 
-    about     = "My name is <a href=\"/about/\">Alan Blount</a>.  I've been programming since 2000 and made my first webpage in high school in 1997.  Things have changed a lot since then.  I'm going to try to keep up with parts of web development and devops tech and may share some of that here.  My goal is to end up being a developer advocate and help more people down this path."
+  # Customization
+  # Define the behavior of the sidebar
+  # 1: Display extra large sidebar on extra large screen, large sidebar on large screen,
+  #    medium sidebar on medium screen and header bar on small screen and
+  # extra large sidebar is swiped on extra large screen and large sidebar on all lower screen (default)
+  # 2: Display large sidebar on large screen, medium sidebar on medium screen and
+  #    header bar on small screen and large sidebar is swiped
+  # 3: Display medium sidebar on large and medium screen and header bar on small screen and
+  #    medium sidebar is swiped
+  # 4: Display header bar on all screens, extra large sidebar is swiped on extra large screen and
+  #    large sidebar is swiped on all lower screens
+  # 5: Display header bar on all screens and large sidebar is swiped on large screen
+  # 6: Display header bar on all screens and medium sidebar is swiped
+  sidebarBehavior = 1
 
-# This will also appear on the sidebar.
-# A width of less than 100px is recommended
-# This is optional
-[params.intro.pic]
-    src       = "/img/main/alan.jpg"
-    # modify your picture in the shape of a circle or
-    # future imperfect's hexagonal shape
-    circle    = false
-    imperfect = true
-    width     = ""
-    alt       = "Alan Blount"
+  # Your blog cover picture. I STRONGLY recommend you to use a CDN to speed up loading of pages.
+  # There is many free CDN like Cloudinary or you can also use indirectly
+  # by using services like Google Photos.
+  # Current image is on AWS S3 and delivered by AWS CloudFront.
+  # Otherwise put your image in folder `static/_images/` (development)  or in `source/assets/images/` if you can't or don't want to build the theme,
+  # and use relative url : `your-image.png`
+  coverImage = "http://cdn.wallpapersafari.com/58/63/CbN6Ht.jpg"
 
-# Adjust the amount of recent posts on the sidebar.
-# This is optional. The default value 5 will be used
-[params.postAmount]
-    sidebar = 2
+  # Display an image gallery at the end of a post which have photos variables (false: disabled, true: enabled)
+  imageGallery = true
 
-# Set up your menu items in the navigation bar
-# You can use identifier to prepend a font awesome icon to your text
-[[menu.main]]
-    name = "Posts"
-    url = "/posts"
-    identifier = "fa fa-code-o"
-    weight = 1
+  # Display thumbnail image of each post on index pages (false: disabled, true: enabled)
+  thumbnailImage = true
+  # Display thumbnail image at the right of title in index pages (`right`, `left` or `bottom`)
+  # Set this value to `right` if you have old posts to keep the old style on them
+  # and define `thumbnailImagePosition` on a post to overwrite this setting
+  thumbnailImagePosition = "bottom"
+  # Automatically select the cover image or the first photo from the gallery of a post if there is no thumbnail image as the thumbnail image
+  # Set this value to `true` if you have old posts that use the cover image or the first photo as the thumbnail image
+  # and set `autoThumbnailImage` to `false` on a post to overwrite this setting
+  autoThumbnailImage = true
 
-[[menu.main]]
-    name = "Categories"
-    url = "/categories"
-    identifier = "fa fa-tasks"
-    weight = 2
+  # Your favicon path, default is "/favicon.png"
+  # favicon = "/favicon.png"
 
-[[menu.main]]
-    name = "About"
-    url = "/about"
-    identifier = "fa fa-user"
-    weight = 3
+  # Header configuration
+  # The link at the right of the header is customizable
+  # You can add a link (as an icon) at the right of the header instead of the author's gravatar image or author's picture.
+  # By default, author's gravatar or author's picture is displayed.
+  #     url: /#search
+  #     icon: search
+  #     class: st-search-show-outputs
 
-# Insert your username and the icon will apear on the page as long as
-# socialAppearAtTop or socialAppearAtBottom is set to true in the params area
-# The social media icons will appear on the sidebar
-[social]
-    github          = "zeroasterisk"
-    bitbucket       = ""
-    jsfiddle        = "zeroasterisk"
-    codepen         = "zeroasterisk"
-    foursquare      = ""
-    dribbble        = ""
-    deviantart      = ""
-    behance         = ""
-    flickr          = ""
-    instagram       = ""
-    youtube         = "zeroasterisk"
-    vimeo           = ""
-    vine            = ""
-    medium          = "zeroasterisk"
-    wordpress       = ""
-    tumblr          = ""
-    xing            = ""
-    linkedin        = "alan.blount"
-    slideshare      = ""
-    stackoverflow   = ""
-    reddit          = ""
-    pinterest       = ""
-    googleplus      = "zeroasterisk"
-    facebook        = ""
-    facebook_admin  = ""
-    twitter_domain  = ""
-    twitter         = "zeroasterisk"
-    email           = "alan@zeroasterisk.com"
+  # Custom CSS. Put here your custom CSS files. They are loaded after the theme CSS;
+  # they have to be referred from static root. Example
+  # customCSS = ["css/foo.css"]
+
+  # Custom JS. Put here your custom JS files. They are loaded after the theme JS;
+  # they have to be referred from static root. Example
+  # customJS = ["js/foo.js"]
+
+  [params.header.rightLink]
+    class = ""
+    icon = ""
+    url = "/#about"
+
+  # Customize like of athor avatar in sidebar
+  # [params.sidebar.profile]
+  #   url = "/#about"
+
+  # Customize copyright value "© 2016 <CUSTOMIZATION>. All Rights Reserved"
+  [params.footer]
+    copyright = "<a href=\"https://github.com/zeroasterisk\">zeroasterisk</a>"
+

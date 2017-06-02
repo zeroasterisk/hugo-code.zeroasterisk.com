@@ -1,17 +1,20 @@
-|-+-|
-author = ""
-categories = []
++++
+author = "alan blount"
+categories = ["meteor", "optimization", "react"]
 date = "2017-05-31T22:56:48-04:00"
-description = ""
+description = "deep dive into Meteor 1.5 dynamic imports. When, how, and why."
 featured = ""
 featuredalt = ""
 featuredpath = ""
 linktitle = ""
-title = "2017 05 31 meteor 1 5 optimization examples"
+title = "Meteor 1.5 ~ Bundle Optimization + Examples"
 
 +++
 
 I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle... make meteor faster for your users.
+<!--more-->
+
+<!-- toc -->
 
 > If you're not already familiar with Meteor you should checkout [the meteor website][meteor] and also [the meteor chef][meteorchef]
 
@@ -26,7 +29,7 @@ Well, this is a bit of a deep dive into some of those questions, and how to use 
 This post is **about identifying what to optimize and how to optimize**...
 I will do another about how to develop better dynamicly imported components.
 
-### Setup a Basic Meteor Project
+# Setup a Basic Meteor Project
 
 > You can clone [this repo][example-repo] and checkout the `01-initial` branch.
 > Or you can use the following instructions to get up to this starting point.
@@ -56,7 +59,7 @@ I then edited the code and added an example to create a simple example project.
 
 Not terrible for a quick example _(and not a todo list)_.
 
-#### Goal: Reduce Time to Initial Render
+# Goal: Reduce Time to Initial Render
 
 > You can clone [this repo][example-repo] and checkout the `02-before-optimization` branch.
 
@@ -78,18 +81,16 @@ Our super-tiny example app is _not too bad_, but could certainly get better.
 
 Our biggest slowdown by far is the bundle of all javascript.
 
-|------------+--------+---------------|
 |            | size   | download_time |
-|------------+--------+---------------|
+|------------|--------|---------------|
 | JS bundle  | 494 KB | 444 ms        |
 | CSS bundle | 7 KB   | 2 ms          |
-|------------+--------+---------------|
 
 ![time-to-render-prod-mode-before-optimize](https://puu.sh/w80ky/6ded16d16d.png)
 
 Wow, but this is such a tiny application... what can we do?
 
-### Profile Profile Profile....
+# Profile Profile Profile....
 
 You should never optimize without profiling.
 
@@ -97,7 +98,7 @@ Sure, when you develop keep performance and optimization in mind - use best prac
 But when you are trying to figure out how you can improve performance, you should use tools to profile and get information about what to optimize.
 Without that profiling information, you will be treading water, spending lots of effort for little value.
 
-#### How to Profile Meteor JavaScript Bundle?
+# How to Profile Meteor JavaScript Bundle?
 
 So we know we need to reduce the total JavaScript Bundle... but how?
 What's Big?
@@ -124,24 +125,22 @@ This is **AMAZING**
 
 Real quick review of some numbers here:
 
-|-------------------+---------|
+
 | section           | percent |
-|-------------------+---------|
-| `react-dom`       | `9.4%`  |
-| `react-dates`     | `9.1%`  |
-| `react-bootstrap` | `8.4%`  |
-| `bootstrap`       | `6.4%`  |
-| `jquery`          | `4.6%`  |
-| `handlebars`      | `4.0%`  |
-|-------------------+---------|
-| app code          | `1.7%`  |
-|-------------------+---------|
+|-------------------|---------|
+| `react-dom`       | 9.4%    |
+| `react-dates`     | 9.1%    |
+| `react-bootstrap` | 8.4%    |
+| `bootstrap`       | 6.4%    |
+| `jquery`          | 4.6%    |
+| `handlebars`      | 4.0%    |
+| app code          | 1.7%    |
 
 ![app-1.7percent](https://puu.sh/w82Pi/11b30cc350.png)
 
 My entire app code is `32k` which is only `1.7%` of the clientside bundle!
 
-### Pick high value targets - sections to remove, reduce, or delay
+# Pick high value targets - sections to remove, reduce, or delay
 
 Armed with this information, we try to identify a section of code we can reduce from our bundle.
 
@@ -168,7 +167,7 @@ Other things to consider:
 - is the lack of that component going to mess things up for server side rendering?
 - is the page going to significantly *jump* when the component gets loaded dynamically, after the rest of the page has rendered?
 
-### Optimize with a dynamic import
+# Optimize with a dynamic import
 
 Since we decided to target `react-dates` I am going to dynamicly load the only component which uses it.
 
@@ -214,7 +213,7 @@ Because the `import` is no longer part of the initial clientside bundle,
 it is compiled with all of it's dependancies, seperately.
 They will be loaded later, the first time they are used, and then cached on the client. _(more on this later)_
 
-### After our dynamic import
+# After our dynamic import
 
 > You can clone [this repo][example-repo] and checkout the `04-after-optimization` branch.
 
@@ -226,12 +225,10 @@ npm run start-as-prod
 #   meteor --production
 ```
 
-|-----------------------+--------|
 | JS bundle             | size   |
-|-----------------------+--------|
+|-----------------------|--------|
 | before dynamic import | 494 KB |
 | after dynamic import  | 459 KB |
-|-----------------------+--------|
 
 ![after-dynamic-import-network-tab](https://puu.sh/w85w8/40aaf947e5.png)
 
@@ -249,7 +246,7 @@ meteor remove bundle-visualizer
 
 ![after-dynamic-import-still-working](https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif)
 
-### So how does it work?
+# So how does it work?
 
 Where is did the component go?  How does it work?
 
@@ -266,7 +263,7 @@ That's actually kind of big!
 
 But it is cached, and it only is loaded when it's needed.
 
-### Experiments - what can you do?
+# Experiments - what can you do?
 
 WIP
 
@@ -276,7 +273,7 @@ WIP
 - [ ] import a npm package
 - [x] import a component that imports a component
 
-### Summary
+# Summary
 
 
 [meteor]: https://meteor.com/ Meteor JS Framework
