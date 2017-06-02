@@ -35,7 +35,7 @@
     <meta property="og:description" content="deep dive into Meteor 1.5 dynamic imports. When, how, and why.">
     <meta property="og:type" content="blog">
     <meta property="og:title" content="Meteor 1.5 ~ Bundle Optimization &#43; Examples">
-    <meta property="og:url" content="/2017/05/meteor-1.5-~-bundle-optimization---examples/">
+    <meta property="og:url" content="/2017/05/meteor-1-5-bundle-optimization/">
     <meta property="og:site_name" content="zeroasterisk talks code">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="zeroasterisk talks code">
@@ -208,7 +208,7 @@ ga('send', 'pageview');
   
   <div class="postShorten-meta post-meta">
   
-    <time itemprop="datePublished" datetime="2017-05-31T22:56:48-04:00">
+    <time itemprop="datePublished" datetime="2017-05-31T00:00:00Z">
       
    31, 2017
 
@@ -219,11 +219,7 @@ ga('send', 'pageview');
   
     <span></span>
     
-      <a class="category-link" href="https://code.zeroasterisk.com/categories/meteor">meteor</a>, 
-    
-      <a class="category-link" href="https://code.zeroasterisk.com/categories/optimization">optimization</a>, 
-    
-      <a class="category-link" href="https://code.zeroasterisk.com/categories/react">react</a>
+      <a class="category-link" href="https://code.zeroasterisk.com/categories/code-learning">code learning</a>
     
   
 
@@ -234,52 +230,66 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&hellip; make meteor faster for your users.
-</p>
+              <p>I have been playing with <a href="https://meteor.com/">Meteor</a> 1.5 release candidates and
+I thought this would be a great topic for a quick article on
+how to optimize your clientside bundle&hellip; make meteor faster for your users.</p>
+
+<p></p>
 
 <h1 id="table-of-contents"></h1><nav id="TableOfContents">
 <ul>
 <li><a href="#setup-a-basic-meteor-project">Setup a Basic Meteor Project</a></li>
 <li><a href="#goal-reduce-time-to-initial-render">Goal: Reduce Time to Initial Render</a></li>
-<li><a href="#profile-profile-profile">Profile Profile Profile&hellip;.</a></li>
+<li><a href="#plan-profile-to-determine-work-to-be-done">Plan: Profile to Determine Work to be Done</a>
+<ul>
 <li><a href="#how-to-profile-meteor-javascript-bundle">How to Profile Meteor JavaScript Bundle?</a></li>
-<li><a href="#pick-high-value-targets-sections-to-remove-reduce-or-delay">Pick high value targets - sections to remove, reduce, or delay</a></li>
-<li><a href="#optimize-with-a-dynamic-import">Optimize with a dynamic import</a></li>
-<li><a href="#after-our-dynamic-import">After our dynamic import</a></li>
-<li><a href="#so-how-does-it-work">So how does it work?</a></li>
+<li><a href="#how-can-we-optimize">How can we optimize?</a>
+<ul>
+<li><a href="#remove">Remove</a></li>
+<li><a href="#reduce">Reduce</a></li>
+<li><a href="#delay">Delay</a></li>
+</ul></li>
+<li><a href="#pick-high-value-targets-sections-to-delay">Pick high value targets - sections to delay</a></li>
+</ul></li>
+<li><a href="#optimize-delay-loading-code-with-a-dynamic-import">Optimize: delay loading code with a dynamic import</a></li>
+<li><a href="#review-after-our-dynamic-import">Review: After our dynamic import</a></li>
+<li><a href="#understand-so-how-does-it-work">Understand:  So how does it work?</a></li>
 <li><a href="#experiments-what-can-you-do">Experiments - what can you do?</a></li>
 <li><a href="#summary">Summary</a></li>
+<li><a href="#thanks-credits">Thanks &amp; Credits</a></li>
 </ul>
 </nav>
 
 <blockquote>
-<p>If you&rsquo;re not already familiar with Meteor you should checkout [the meteor website][meteor] and also [the meteor chef][meteorchef]</p>
+<p>If you&rsquo;re not already familiar with Meteor you should checkout <a href="https://meteor.com/">the meteor website</a> and also <a href="https://themeteorchef.com/">the meteor chefmeteorchef</a></p>
 </blockquote>
 
-<p>[Meteor 1.5 landed][meteor-1.5], and it&rsquo;s got a lot of fantastic features,
+<p><a href="https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb">Meteor 1.5 landed</a>,
+and it&rsquo;s got a lot of fantastic features,
 but I think the big one that people want to know about is
-<strong>the ability to dynamicaly import code</strong>.</p>
+<strong>the ability to dynamically import code</strong>.</p>
 
-<p>What is that?  Why is it useful?  How do I do it?  How do I know what to dynamicly import?</p>
+<p>What is that?  Why is it useful?  How do I do it?  How do I know what to dynamically import?</p>
 
 <p>Well, this is a bit of a deep dive into some of those questions, and how to use these new tools to improve your application&rsquo;s load time.</p>
 
 <p>This post is <strong>about identifying what to optimize and how to optimize</strong>&hellip;
-I will do another about how to develop better dynamicly imported components.</p>
+I will do another about how to develop better dynamically imported components.</p>
 
 <h1 id="setup-a-basic-meteor-project">Setup a Basic Meteor Project</h1>
 
 <blockquote>
-<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a> and checkout the <code>01-initial</code> branch.
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
+and checkout the <code>01-initial</code> branch.
 Or you can use the following instructions to get up to this starting point.
 Or you can jump right into this topic on your own project.</p>
 </blockquote>
 
 <p>To do anything, we need a simple test project.
-I am starting with [Meteor Chef Base][meteorchefbase]
-and I am adding <a href="https://github.com/airbnb/react-dates">react-dates</a> and a bit of functionality
-to pick date ranges
-<em>(I also happen to know it has a noticable impact on bundle size, which we will see later)</em>.</p>
+I am starting with <a href="https://github.com/themeteorchef/base">Meteor Chef Base</a>
+and I am adding <a href="https://github.com/airbnb/react-dates">react-dates</a>
+and a bit of functionality to pick date ranges
+<em>(I also happen to know it has a noticeable impact on bundle size, which we will see later)</em>.</p>
 
 <pre><code class="language-sh">git clone https://github.com/themeteorchef/base.git meteor-example-optimize-client-bundle
 cd meteor-example-optimize-client-bundle
@@ -300,7 +310,8 @@ npm start
 <h1 id="goal-reduce-time-to-initial-render">Goal: Reduce Time to Initial Render</h1>
 
 <blockquote>
-<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a> and checkout the <code>02-before-optimization</code> branch.</p>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
+and checkout the <code>02-before-optimization</code> branch.</p>
 </blockquote>
 
 <p>Make things faster, always.
@@ -309,8 +320,8 @@ and one of the pain points for meteor apps.</p>
 
 <p>Why?  When in production mode, Meteor builds all of your app into 1 big JS and 1 big CSS file - these are called the <em>&ldquo;client bundle&rdquo;</em>.</p>
 
-<p>Meteor does it&rsquo;s best to minimize those files, and cache them&hellip; but it can still be a whole lot of stuff sent to the client (this is all of your code and your code&rsquo;s dependancies) on initial pageload&hellip;
-Especially if you don&rsquo;t always need some of those components and dependancies.</p>
+<p>Meteor does it&rsquo;s best to minimize those files, and cache them&hellip; but it can still be a whole lot of stuff sent to the client (this is all of your code and your code&rsquo;s dependencies) on initial pageload&hellip;
+Especially if you don&rsquo;t always need some of those components and dependencies.</p>
 
 <p>To test and profile, <em>we have to run in production mode</em>,
 as if we had deployed to a server.</p>
@@ -349,7 +360,7 @@ as if we had deployed to a server.</p>
 
 <p>Wow, but this is such a tiny application&hellip; what can we do?</p>
 
-<h1 id="profile-profile-profile">Profile Profile Profile&hellip;.</h1>
+<h1 id="plan-profile-to-determine-work-to-be-done">Plan: Profile to Determine Work to be Done</h1>
 
 <p>You should never optimize without profiling.</p>
 
@@ -357,7 +368,7 @@ as if we had deployed to a server.</p>
 But when you are trying to figure out how you can improve performance, you should use tools to profile and get information about what to optimize.
 Without that profiling information, you will be treading water, spending lots of effort for little value.</p>
 
-<h1 id="how-to-profile-meteor-javascript-bundle">How to Profile Meteor JavaScript Bundle?</h1>
+<h2 id="how-to-profile-meteor-javascript-bundle">How to Profile Meteor JavaScript Bundle?</h2>
 
 <p>So we know we need to reduce the total JavaScript Bundle&hellip; but how?
 What&rsquo;s Big?
@@ -365,8 +376,9 @@ What&rsquo;s easy to remove?
 What&rsquo;s not used?</p>
 
 <p>Luckily, there is a now a
-[bundle-visualizer][bundle-visualizer] package which gives us an awesome
-sundail graph for identifying size in our initial load.</p>
+<a href="https://atmospherejs.com/meteor/bundle-visualizer">bundle-visualizer</a>
+package which gives us an awesome
+sundial graph for identifying size in our initial load.</p>
 
 <pre><code class="language-sh">meteor add bundle-visualizer
 npm run start-as-prod
@@ -433,42 +445,83 @@ npm run start-as-prod
 
 <p>My entire app code is <code>32k</code> which is only <code>1.7%</code> of the clientside bundle!</p>
 
-<h1 id="pick-high-value-targets-sections-to-remove-reduce-or-delay">Pick high value targets - sections to remove, reduce, or delay</h1>
+<h2 id="how-can-we-optimize">How can we optimize?</h2>
 
-<p>Armed with this information, we try to identify a section of code we can reduce from our bundle.</p>
+<p>So we can look at our codebase in <em>sections</em> and do something&hellip;</p>
 
-<p>We start by looking at the &ldquo;biggest&rdquo; sections of code (clockwise),
-and for each section we try to ask ourselves if we can <strong>remove</strong> or <strong>reduce</strong> or <strong>delay</strong> loading.</p>
+<p><em>What exactly will we even be doing?</em></p>
+
+<p>It really comes down to 3 options:</p>
 
 <ol>
-<li><strong>remove</strong> from our project entirely (best solution, but not often possible)</li>
-<li><strong>reduce</strong> <em>significantly</em> the size of a section (micro optimization, not usually effective)</li>
-<li><strong>delay</strong> loading a section via <strong>dynamic import</strong> (our new option)</li>
+<li><strong>remove</strong> a section of code from our project entirely <em>(best solution, but not often possible)</em></li>
+<li><strong>reduce</strong> the size of a section <em>(micro optimization, not usually effective)</em></li>
+<li><strong>delay</strong> loading a section via <strong>dynamic import</strong> <em>(our new option)</em></li>
 </ol>
 
-<p>In this example, I could <strong>remove</strong> <code>jquery</code> or <code>handlebars</code> becaue I&rsquo;m not using it&hellip; but Meteor Chef Base is&hellip; This is outside of the scope of this article, but a good thing to plan in your application.</p>
+<h3 id="remove">Remove</h3>
 
-<p>My application code is <em>super tiny</em> comparativly, so there&rsquo;s very little I could do to <strong>reduce</strong> the side of my code&hellip; This is usually the least valuable way to spend your time.  Better to remove or delay a bunch first.</p>
+<p>In this example, I could <strong>remove</strong> <code>jquery</code> or <code>handlebars</code> because I&rsquo;m not using it&hellip; but Meteor Chef Base is&hellip;</p>
+
+<p>This is outside of the scope of this article.  If you can remove code, do so.</p>
+
+<h3 id="reduce">Reduce</h3>
+
+<p>There&rsquo;s very little I could do to <strong>reduce</strong> the size of my code, my application code is <em>super tiny</em>.</p>
+
+<p>This is usually the least valuable way to spend your time.  Better to remove or delay a bunch first.</p>
+
+<h3 id="delay">Delay</h3>
 
 <p>Ok&hellip; What can I <strong>delay</strong>, and what are the ramifications of doing so?</p>
 
 <p>Basically you want to look for things which are only used once or twice,
 but which have a heavy footprint.</p>
 
+<h2 id="pick-high-value-targets-sections-to-delay">Pick high value targets - sections to delay</h2>
+
+<p>Armed with a profile of code sections <em>(size)</em>,
+we try to identify a what we can remove from our initial bundle, and only load as needed.</p>
+
+<p>We start by looking at the &ldquo;biggest&rdquo; sections of code <em>(clockwise)</em>,
+and for each section we try to ask ourselves if we can <strong>remove</strong> or <strong>delay</strong> loading.</p>
+
+<p><strong>Pro Delay:</strong></p>
+
+<ul>
+<li>Is the section of code used only once or in a very few components?</li>
+<li>Is the section of code an optional &ldquo;secondary&rdquo; feature?</li>
+<li>Is the section of code a big enough percentage of the bundle to make it worthwhile?</li>
+</ul>
+
+<p><strong>Against Delay:</strong></p>
+
+<ul>
+<li>Is the component required to make the initial page render look ok to the user?</li>
+<li>Is the page going to significantly <em>jump</em> when the component gets loaded dynamically, after the rest of the page has rendered?</li>
+<li>Is the lack of that component going to mess things up for server side rendering?</li>
+</ul>
+
 <p>In this case, <code>react-dates</code> is a great candidate, because I <strong>only use it once</strong> in my codebase, but <strong>it&rsquo;s got a huge footprint</strong> in the clientside bundle.</p>
 
-<p>Other things to consider:
-- is the component required to make the initial page render look ok to the user?
-- is the lack of that component going to mess things up for server side rendering?
-- is the page going to significantly <em>jump</em> when the component gets loaded dynamically, after the rest of the page has rendered?</p>
+<blockquote>
+<p>Note: I&rsquo;m using <a href="https://github.com/ggreer/the_silver_searcher">ag (the silver searcher)</a> or <a href="https://github.com/BurntSushi/ripgrep">rg (ripgrep)</a> to search through file contents, lightning fast.</p>
+</blockquote>
 
-<h1 id="optimize-with-a-dynamic-import">Optimize with a dynamic import</h1>
+<pre><code class="language-sh">$ ag 'react-dates' imports -c
+imports/ui/components/PickDates.js:1
+</code></pre>
 
-<p>Since we decided to target <code>react-dates</code> I am going to dynamicly load the only component which uses it.</p>
+<h1 id="optimize-delay-loading-code-with-a-dynamic-import">Optimize: delay loading code with a dynamic import</h1>
 
-<p>I could do this several ways, but here&rsquo;s a fairly simple one.</p>
+<p>Since we decided to target <code>react-dates</code>,
+I am going to dynamically load the only component which uses it, <code>PickDates</code>.</p>
 
-<p>First I install a super-useful helper <a href="https://github.com/thejameskyle/react-loadable">react-loadable</a>, which handles the loading react component</p>
+<p>I could do this several ways, but here&rsquo;s a very simple approach.</p>
+
+<p>First I install a super-useful helper
+<a href="https://github.com/thejameskyle/react-loadable">react-loadable</a>,
+which handles the <em>&ldquo;maybe I&rsquo;m loading, maybe I&rsquo;m loaded&rdquo;</em> react component.</p>
 
 <pre><code class="language-sh">meteor npm install --save react-loadable
 </code></pre>
@@ -495,19 +548,27 @@ const PickDates = Loader({
 });
 </code></pre>
 
-<p>This is a bit of a simple answer, it can get a lot more complex&hellip; but in short:
-<code>react-loader</code> will render our component when it&rsquo;s available.
-The <code>loader</code> function recieves a promise which resolves as soon as the dynamic import is done.
-The <code>import(&lt;path&gt;)</code> is the where the magic happens.</p>
+<p>It can get a lot more complex, but this is a fine place to start.</p>
+
+<ol>
+<li><code>react-loader</code> is a <a href="https://facebook.github.io/react/docs/higher-order-components.html">HOC</a>
+which will render our component when it&rsquo;s available.</li>
+<li>The <code>loader: &lt;func&gt;</code> function recieves a promise which resolves as soon as the dynamic import is done.</li>
+<li>The <code>import(&lt;path&gt;)</code> is the where the actual dynamic import <em>(magic)</em> happens.
+It returns a promise which resolves when the component is on the client.</li>
+<li>The <code>LoadingComponent</code> shows while the component is not yet loaded.</li>
+<li>The <code>delay</code> hides the <code>LoadingComponent</code> for this long, so there is less flicker in case the component is already cached and can just load-in super fast.</li>
+</ol>
 
 <p>Because the <code>import</code> is no longer part of the initial clientside bundle,
 it is compiled with all of it&rsquo;s dependancies, seperately.
 They will be loaded later, the first time they are used, and then cached on the client. <em>(more on this later)</em></p>
 
-<h1 id="after-our-dynamic-import">After our dynamic import</h1>
+<h1 id="review-after-our-dynamic-import">Review: After our dynamic import</h1>
 
 <blockquote>
-<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a> and checkout the <code>04-after-optimization</code> branch.</p>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
+and checkout the <code>04-after-optimization</code> branch.</p>
 </blockquote>
 
 <p>Did it do anything?  Lets profile again.</p>
@@ -546,14 +607,14 @@ They will be loaded later, the first time they are used, and then cached on the 
 
 <p>It looks like we no longer have the <code>react-dates</code> module at all&hellip;</p>
 
-<p>But if I get rid of the <code>bundle-visualizer</code> then I can see it working&hellip;</p>
+<p>But if I get rid of the <code>bundle-visualizer</code> then I can see our date picker working&hellip;</p>
 
 <pre><code class="language-sh">meteor remove bundle-visualizer
 </code></pre>
 
 <p><img src="https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif" alt="after-dynamic-import-still-working" /></p>
 
-<h1 id="so-how-does-it-work">So how does it work?</h1>
+<h1 id="understand-so-how-does-it-work">Understand:  So how does it work?</h1>
 
 <p>Where is did the component go?  How does it work?</p>
 
@@ -566,13 +627,18 @@ and the response with the dynamic import payload.</p>
 <p><img src="https://puu.sh/w86fn/6d86a850a7.png" alt="request" />
 <img src="https://puu.sh/w86gK/3819c7813f.png" alt="response" /></p>
 
-<p>That&rsquo;s actually kind of big!</p>
+<p>That&rsquo;s actually kind of a <strong>big</strong> frame!</p>
 
-<p>But it is cached, and it only is loaded when it&rsquo;s needed.</p>
+<p>But it <em>is cached</em>, and it only is loaded when it&rsquo;s needed.</p>
 
 <h1 id="experiments-what-can-you-do">Experiments - what can you do?</h1>
 
-<p>WIP</p>
+<blockquote>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
+and checkout the <code>05-experiments</code> branch.</p>
+</blockquote>
+
+<p>I felt like trying out a few more variations on how things can be loaded.</p>
 
 <ul class="task-list">
 <li><input type="checkbox" checked disabled class="task-list-item"> import as in-file functions</li>
@@ -584,14 +650,48 @@ and the response with the dynamic import payload.</p>
 
 <h1 id="summary">Summary</h1>
 
-<p>[meteor]: <a href="https://meteor.com/">https://meteor.com/</a> Meteor JS Framework
-[meteor-1.5]: <a href="https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb">https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb</a> Meteor v 1.5
-[meteorchef]: <a href="https://themeteorchef.com/">https://themeteorchef.com/</a> The Meteor Chef</p>
+<p>You can now segment your meteor clientside codebase.</p>
+
+<ul>
+<li>You can make an admin section, only load when needed.</li>
+<li>You can make every route, only load when needed.</li>
+<li>Or better, you can dynamically load individual components&hellip; <em>(especially expensive ones)</em></li>
+</ul>
+
+<h1 id="thanks-credits">Thanks &amp; Credits</h1>
+
+<p>Huge thanks to Meteor, MDG, and especially <a href="https://github.com/benjamn/">ben</a>&hellip; I&rsquo;ve been learning a lot just by reading your commits, and I am grateful for your contributions.</p>
+
+<p>Also a huge thanks to <a href="https://github.com/abernix">jesse</a> for the bundle-visualizer and all your other meteor work.</p>
+
+<p>Definitly read <a href="https://blog.meteor.com/announcing-meteor-1-5-b82be66571bb">the Meteor Blog Post</a> and maybe the <a href="https://github.com/meteor/meteor/pull/8327">huge pull request</a> for information about dynamic imports.</p>
+
+<p>I&rsquo;ve also played with code from meteor&rsquo;s <a href="https://github.com/meteor/react-loadable-example">react-loadable example</a> which helped me to understand dynamic imports.</p>
+
+<p>Other good reading, <a href="https://webpack.js.org/guides/code-splitting-async/">webpack&rsquo;s dynamic import</a> docs are useful too.</p>
               
             </div>
           </div>
           <div id="post-footer" class="post-footer main-content-wrap">
             
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small"></span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/meteor/">meteor</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/es7/">es7</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/import/">import</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/optimization/">optimization</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/react/">react</a>
+
+                  </div>
+                
               
             
             <div class="post-actions-wrap">
@@ -625,17 +725,17 @@ and the response with the dynamic import payload.</p>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -706,17 +806,17 @@ and the response with the dynamic import payload.</p>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
           <i class="fa fa-google-plus"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
           <i class="fa fa-facebook-official"></i>
         </a>
       </li>
       <li class="post-action hide-xs">
-        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
           <i class="fa fa-twitter"></i>
         </a>
       </li>
@@ -743,17 +843,17 @@ and the response with the dynamic import payload.</p>
       <div id="share-options-bar" class="share-options-bar" data-behavior="4">
   <ul class="share-options">
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
         <i class="fa fa-google-plus"></i><span></span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
         <i class="fa fa-facebook-official"></i><span></span>
       </a>
     </li>
     <li class="share-option">
-      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1.5-~-bundle-optimization---examples%2f">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f05%2fmeteor-1-5-bundle-optimization%2f">
         <i class="fa fa-twitter"></i><span></span>
       </a>
     </li>
@@ -813,7 +913,7 @@ and the response with the dynamic import payload.</p>
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://code.zeroasterisk.com/2017/05/meteor-1.5-~-bundle-optimization---examples/">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/">
                 <h3 class="media-heading">Meteor 1.5 ~ Bundle Optimization &#43; Examples</h3>
               </a>
               <span class="media-meta">
@@ -821,8 +921,11 @@ and the response with the dynamic import payload.</p>
                   May 5, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather"><p>I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&hellip; make meteor faster for your users.
-</p></div>
+              <div class="media-content hide-xs font-merryweather"><p>I have been playing with <a href="https://meteor.com/">Meteor</a> 1.5 release candidates and
+I thought this would be a great topic for a quick article on
+how to optimize your clientside bundle&hellip; make meteor faster for your users.</p>
+
+<p></p></div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -896,9 +999,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/code.zeroasterisk.com\/2017\/05\/meteor-1.5-~-bundle-optimization---examples\/';
+          this.page.url = 'https:\/\/code.zeroasterisk.com\/2017\/05\/meteor-1-5-bundle-optimization\/';
           
-            this.page.identifier = '\/2017\/05\/meteor-1.5-~-bundle-optimization---examples\/'
+            this.page.identifier = '\/2017\/05\/meteor-1-5-bundle-optimization\/'
           
         };
         (function() {
@@ -908,7 +1011,7 @@ $(document).ready(function() {
             return;
           }
           var d = document, s = d.createElement('script');
-          var disqus_shortname = 'zeroasterisk';
+          var disqus_shortname = 'alanblount';
           s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
 
           s.setAttribute('data-timestamp', +new Date());

@@ -6,9 +6,55 @@
     <description>Recent content in Tags on zeroasterisk talks code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Wed, 31 May 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://code.zeroasterisk.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Es7</title>
+      <link>https://code.zeroasterisk.com/tags/es7/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/es7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Import</title>
+      <link>https://code.zeroasterisk.com/tags/import/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/import/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Meteor</title>
+      <link>https://code.zeroasterisk.com/tags/meteor/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/meteor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Optimization</title>
+      <link>https://code.zeroasterisk.com/tags/optimization/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/optimization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>React</title>
+      <link>https://code.zeroasterisk.com/tags/react/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/react/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

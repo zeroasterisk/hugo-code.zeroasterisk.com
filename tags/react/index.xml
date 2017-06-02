@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on zeroasterisk talks code</title>
-    <link>https://code.zeroasterisk.com/post/</link>
-    <description>Recent content in Posts on zeroasterisk talks code</description>
+    <title>React on zeroasterisk talks code</title>
+    <link>https://code.zeroasterisk.com/tags/react/</link>
+    <description>Recent content in React on zeroasterisk talks code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 31 May 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://code.zeroasterisk.com/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://code.zeroasterisk.com/tags/react/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

@@ -6,19 +6,22 @@
     <description>Recent content on zeroasterisk talks code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 31 May 2017 22:56:48 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 31 May 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://code.zeroasterisk.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Meteor 1.5 ~ Bundle Optimization &#43; Examples</title>
-      <link>https://code.zeroasterisk.com/2017/05/meteor-1.5-~-bundle-optimization---examples/</link>
-      <pubDate>Wed, 31 May 2017 22:56:48 -0400</pubDate>
+      <link>https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/</link>
+      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://code.zeroasterisk.com/2017/05/meteor-1.5-~-bundle-optimization---examples/</guid>
-      <description>&lt;p&gt;I have been playing with Meteor 1.5 release candidates and I thought this would be a great topic for a quick article on how to optimize your clientside bundle&amp;hellip; make meteor faster for your users.
-&lt;/p&gt;</description>
+      <guid>https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/</guid>
+      <description>&lt;p&gt;I have been playing with &lt;a href=&#34;https://meteor.com/&#34;&gt;Meteor&lt;/a&gt; 1.5 release candidates and
+I thought this would be a great topic for a quick article on
+how to optimize your clientside bundle&amp;hellip; make meteor faster for your users.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
