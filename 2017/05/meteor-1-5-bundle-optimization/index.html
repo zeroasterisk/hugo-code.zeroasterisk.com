@@ -268,9 +268,9 @@ Come back to this when you&rsquo;re comfortable and want to optimize an existing
 <li><a href="#understand-so-how-does-it-work">Understand: So how does it work?</a>
 <ul>
 <li><a href="#keep-this-in-mind-dynamic-imports-are-not-free">Keep this in mind: Dynamic Imports are not Free</a></li>
-<li><a href="#next-level-optimize-unify-loaded-dependencies">Next Level Optimize: Unify Loaded Dependencies</a></li>
+<li><a href="#built-in-optimization-each-component-is-only-imported-1-time">Built In Optimization: Each Component IS Only Imported 1 Time</a></li>
 </ul></li>
-<li><a href="#experiment-what-can-you-do-with-dynamic-imports">Experiment: What can you do with dynamic imports?</a></li>
+<li><a href="#experiments-what-can-you-do-with-dynamic-imports">Experiments: What can you do with dynamic imports?</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#thanks-credits">Thanks &amp; Credits</a></li>
 </ul>
@@ -656,6 +656,8 @@ and the response with the dynamic import payload.</p>
 
 <p>But it <em>is cached</em>, websocket transfer is pretty fast, and it only is loaded when it&rsquo;s needed.</p>
 
+<p>Furthermore, each component is <strong>only imported 1 time</strong>, even if imported via different paths.</p>
+
 <h2 id="keep-this-in-mind-dynamic-imports-are-not-free">Keep this in mind: Dynamic Imports are not Free</h2>
 
 <p>The dynamic import does make the section of code disappear from your clientside bundle.</p>
@@ -669,40 +671,44 @@ and the response with the dynamic import payload.</p>
 <li>dynamic imports are not <em>(currently)</em> profileable&hellip; so to profile you&rsquo;d have to make static imports again.</li>
 </ul>
 
-<h2 id="next-level-optimize-unify-loaded-dependencies">Next Level Optimize: Unify Loaded Dependencies</h2>
+<h2 id="built-in-optimization-each-component-is-only-imported-1-time">Built In Optimization: Each Component IS Only Imported 1 Time</h2>
 
 <blockquote>
-<p>TL;DR import smaller chunks of code and dependency, for greater re-use and simpler scoping</p>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
+and checkout the <code>06-experiments</code> branch.</p>
 </blockquote>
 
-<p>If I had the following component tree:</p>
+<p>I conducted a few experiemnts (more below) and I now better understand how the imports work.</p>
+
+<p>Here is an obvious structure of components:</p>
 
 <pre><code>- MyPage
-  - Trunk
+  - Trunk &lt;-- dynamicly imported from a page
     - Limb
-      - Branch
+      - Branch &lt;-- dynamicly imported from a page
         - Twig
-          - Stem
-            - Leaf
+          - Leaf
 </code></pre>
 
-<p>I could dynamically import any of those levels&hellip;
-but the further up that tree <em>(the closer to the trunk)</em>
-the <strong>bigger</strong> my dynamic imported section of code is.</p>
+<p>At first, my experiment was to log into the console, when JS &ldquo;loaded&rdquo; code.</p>
 
-<p>If we import <code>Limb</code> we get <code>Limb - Leaf</code> in 1 bundle.</p>
+<p><img src="https://puu.sh/wbcVJ/ccfac76efc.png" alt="ss" /></p>
 
-<p>If we later dynamically import <code>Twig</code> from some other page, we get <code>Twig - Leaf</code> in a <em>(different)</em> 2nd bundle.</p>
+<p>That caused me to believe they were in fact imported twice&hellip; but <strong>they were not</strong>.</p>
 
-<p>This means that we have just duplicated code, bundled it twice.</p>
+<p>In fact, if you look at the websocket frames,
+you can see that <code>Leaf</code> component is only imported 1 time.
+<img src="https://puu.sh/wbdrg/1e9d059d96.png" alt="ss" />
+<img src="https://puu.sh/wbdrP/9106658bc2.png" alt="ss" /></p>
 
-<p>The obvious solution for this, would be to ensure that <code>Branch</code> also used <strong>the same dynamic import</strong> for <code>Twig</code>.</p>
+<p>And it is more obvious, when you load the Trunk first and the Branch second:
+<img src="https://puu.sh/wbe2H/3caac65457.png" alt="ss" /></p>
 
-<p>As long as the dynamic import is the same, everywhere it is used, it gets re-used.</p>
+<p>Then there is not second import for Branch, because it was already imported above&hellip;</p>
 
-<p>As soon as you dynamic import a tree of dependencies, you get every dependency, possibly duplicated.</p>
+<p><strong>This is REALLY impressive, and speaks highly of the module system in Meteor</strong></p>
 
-<h1 id="experiment-what-can-you-do-with-dynamic-imports">Experiment: What can you do with dynamic imports?</h1>
+<h1 id="experiments-what-can-you-do-with-dynamic-imports">Experiments: What can you do with dynamic imports?</h1>
 
 <blockquote>
 <p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
