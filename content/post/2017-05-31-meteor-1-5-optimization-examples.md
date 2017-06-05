@@ -334,6 +334,8 @@ That's actually kind of a **big** frame!
 
 But it _is cached_, websocket transfer is pretty fast, and it only is loaded when it's needed.
 
+Furthermore, each component is **only imported 1 time**, even if imported via different paths.
+
 ## Keep this in mind: Dynamic Imports are not Free
 
 The dynamic import does make the section of code disappear from your clientside bundle.
@@ -345,39 +347,43 @@ It does "improve" the profiled metrics... but it has a few costs:
 * bundle over websocket can not be offloaded to a CDN
 * dynamic imports are not _(currently)_ profileable... so to profile you'd have to make static imports again.
 
-## Next Level Optimize: Unify Loaded Dependencies
+## Built In Optimization: Each Component IS Only Imported 1 Time
 
-> TL;DR import smaller chunks of code and dependency, for greater re-use and simpler scoping
+> You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
+> and checkout the `06-experiments` branch.
 
-If I had the following component tree:
+I conducted a few experiemnts (more below) and I now better understand how the imports work.
+
+Here is an obvious structure of components:
 
 ```
 - MyPage
-  - Trunk
+  - Trunk <-- dynamicly imported from a page
     - Limb
-      - Branch
+      - Branch <-- dynamicly imported from a page
         - Twig
-          - Stem
-            - Leaf
+          - Leaf
 ```
 
-I could dynamically import any of those levels...
-but the further up that tree _(the closer to the trunk)_
-the **bigger** my dynamic imported section of code is.
+At first, my experiment was to log into the console, when JS "loaded" code.
 
-If we import `Limb` we get `Limb - Leaf` in 1 bundle.
+![ss](https://puu.sh/wbcVJ/ccfac76efc.png)
 
-If we later dynamically import `Twig` from some other page, we get `Twig - Leaf` in a _(different)_ 2nd bundle.
+That caused me to believe they were in fact imported twice... but **they were not**.
 
-This means that we have just duplicated code, bundled it twice.
+In fact, if you look at the websocket frames,
+you can see that `Leaf` component is only imported 1 time.
+![ss](https://puu.sh/wbdrg/1e9d059d96.png)
+![ss](https://puu.sh/wbdrP/9106658bc2.png)
 
-The obvious solution for this, would be to ensure that `Branch` also used **the same dynamic import** for `Twig`.
+And it is more obvious, when you load the Trunk first and the Branch second:
+![ss](https://puu.sh/wbe2H/3caac65457.png)
 
-As long as the dynamic import is the same, everywhere it is used, it gets re-used.
+Then there is not second import for Branch, because it was already imported above...
 
-As soon as you dynamic import a tree of dependencies, you get every dependency, possibly duplicated.
+**This is REALLY impressive, and speaks highly of the module system in Meteor**
 
-# Experiment: What can you do with dynamic imports?
+# Experiments: What can you do with dynamic imports?
 
 > You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
 > and checkout the `06-experiments` branch.
