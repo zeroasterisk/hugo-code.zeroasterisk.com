@@ -6,9 +6,19 @@
     <description>Recent content in Categories on zeroasterisk talks code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sun, 01 Jan 2017 23:37:35 -0400</lastBuildDate>
     
 	<atom:link href="https://code.zeroasterisk.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Advocacy</title>
+      <link>https://code.zeroasterisk.com/categories/advocacy/</link>
+      <pubDate>Sun, 01 Jan 2017 23:37:35 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/advocacy/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Code learning</title>
@@ -16,6 +26,87 @@
       <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
       
       <guid>https://code.zeroasterisk.com/categories/code-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cordova / phonegap</title>
+      <link>https://code.zeroasterisk.com/categories/cordova-/-phonegap/</link>
+      <pubDate>Tue, 09 Sep 2014 21:41:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/cordova-/-phonegap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Development</title>
+      <link>https://code.zeroasterisk.com/categories/development/</link>
+      <pubDate>Thu, 24 Apr 2014 14:06:47 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Elixir</title>
+      <link>https://code.zeroasterisk.com/categories/elixir/</link>
+      <pubDate>Sun, 01 Jan 2017 23:37:35 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/elixir/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Geek</title>
+      <link>https://code.zeroasterisk.com/categories/geek/</link>
+      <pubDate>Tue, 09 Sep 2014 21:41:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/geek/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Js</title>
+      <link>https://code.zeroasterisk.com/categories/js/</link>
+      <pubDate>Fri, 23 Aug 2013 02:49:23 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/js/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Learning developers</title>
+      <link>https://code.zeroasterisk.com/categories/learning-developers/</link>
+      <pubDate>Thu, 24 Apr 2014 14:06:47 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/learning-developers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine learning</title>
+      <link>https://code.zeroasterisk.com/categories/machine-learning/</link>
+      <pubDate>Sun, 01 Jan 2017 23:37:35 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Meteorjs</title>
+      <link>https://code.zeroasterisk.com/categories/meteorjs/</link>
+      <pubDate>Tue, 09 Sep 2014 21:41:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/meteorjs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nerd</title>
+      <link>https://code.zeroasterisk.com/categories/nerd/</link>
+      <pubDate>Sun, 01 Jan 2017 23:37:35 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/categories/nerd/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wordpress on zeroasterisk talks code</title>
+    <link>https://code.zeroasterisk.com/tags/wordpress/</link>
+    <description>Recent content in Wordpress on zeroasterisk talks code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 May 2017 23:39:00 -0400</lastBuildDate>
+    
+	<atom:link href="https://code.zeroasterisk.com/tags/wordpress/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Why wait? Adopt hugo for Static Site Generation</title>
+      <link>https://code.zeroasterisk.com/2017/05/why-wait-adopt-hugo-for-static-site-generation/</link>
+      <pubDate>Mon, 29 May 2017 23:39:00 -0400</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/2017/05/why-wait-adopt-hugo-for-static-site-generation/</guid>
+      <description>Why&amp;hellip; oh why&amp;hellip; why did I wait so long?
+I&amp;rsquo;ve been talking about switching to a static site generator for years, since jekyllrb started gaining popularity.
+I understood the benefits, but I had no compelling reason to switch&amp;hellip; (sort of how I resisted git for a few years because svn worked well enough)
+But who wants a WordPress site?
+Well, ok, maybe you are using 12 plugins and doing fancy stuff.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cordova / phonegap on zeroasterisk talks code</title>
+    <link>https://code.zeroasterisk.com/categories/cordova-/-phonegap/</link>
+    <description>Recent content in Cordova / phonegap on zeroasterisk talks code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 Sep 2014 21:41:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://code.zeroasterisk.com/categories/cordova-/-phonegap/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Meteor 0.9.2-rc1 is fun to play with, Cordova support functional</title>
+      <link>https://code.zeroasterisk.com/2014/09/09/meteor-092rc1-with-cordova/</link>
+      <pubDate>Tue, 09 Sep 2014 21:41:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/2014/09/09/meteor-092rc1-with-cordova/</guid>
+      <description>Last night I started playing with `meteor &amp;#8211;release 0.9.2-rc1` which you can read about and play with too; check it out here:
+https://meteor.hackpad.com/Getting-Started-With-Cordova-Z5n6zkVB1xq
+It&amp;#8217;s wonderful!
+The local development and hot-code-push is a great improvement over any other solution I&amp;#8217;ve been using. Builds were painless (mostly).
+Most of my stumbling points were due to 9x, not the new Cordova stuff.
+A few interesting details&amp;#8230;
+Cordova gets built here:
+$ ll -a .</description>
+    </item>
+    
+  </channel>
+</rss>

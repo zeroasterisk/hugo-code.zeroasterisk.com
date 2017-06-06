@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Js on zeroasterisk talks code</title>
+    <link>https://code.zeroasterisk.com/categories/js/</link>
+    <description>Recent content in Js on zeroasterisk talks code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 23 Aug 2013 02:49:23 +0000</lastBuildDate>
+    
+	<atom:link href="https://code.zeroasterisk.com/categories/js/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Meteor &#43; PhoneGap/Cordova (Roundup – Fall 2013)</title>
+      <link>https://code.zeroasterisk.com/2013/08/22/meteor-phonegapcordova-roundup-fall-2013/</link>
+      <pubDate>Fri, 23 Aug 2013 02:49:23 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/2013/08/22/meteor-phonegapcordova-roundup-fall-2013/</guid>
+      <description>UPDATE: see meteor-core-cordova-support-alpha-release-is-out (2014-08-25) for new information
+&amp;nbsp;
+About Meteor and PhoneGap / Cordova Meteor is a rapid server/client development framework, written in JS &amp;#8211; makes very interactive apps easy to build. http://meteor.com
+PhoneGap / Cordova is a project to allow developers to use HTML, CSS, and JS to build mobile apps for all major devices. http://phonegap.com
+Basics of Integrating Meteor + PhoneGap / Cordova The basic idea here is to use PhoneGap / Cordova to create a mobile App on several different platforms at once and it gives device hardware access; then “load” your Meteor application, which handles all of the rest of whatever you want your app to do.</description>
+    </item>
+    
+  </channel>
+</rss>
