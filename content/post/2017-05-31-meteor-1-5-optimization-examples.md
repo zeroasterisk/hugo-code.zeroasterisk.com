@@ -352,7 +352,7 @@ It does "improve" the profiled metrics... but it has a few costs:
 > You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
 > and checkout the `06-experiments` branch.
 
-I conducted a few experiemnts (more below) and I now better understand how the imports work.
+I conducted a few experiments (more below) and I now better understand how the imports work.
 
 Here is an obvious structure of components:
 
@@ -397,6 +397,16 @@ I felt like trying out a few more variations on how things can be loaded.
 - [ ] import as shared function, path as arg _(fails, can not find the path)_
 - [ ] import a npm package directly _(fails)_
 - [x] import a component that imports a component _(works, and a good idea, within reason)_
+
+# Experiments: Profiling imports?
+
+> You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
+> and checkout the `07-profiling` branch.
+
+- [x] import (static) `lodash.cloneDeep` = `8.9kb` [screenshot](https://puu.sh/wc2Gs/f694dacc7b.png)
+- [x] import (static) `lodash/cloneDeep` = `19.5kb` [screenshot](https://puu.sh/wc2Lq/88f9db3c45.png)
+ + [screenshot2](https://puu.sh/wc2KD/c333e1834e.png)
+
 
 # Summary
 
