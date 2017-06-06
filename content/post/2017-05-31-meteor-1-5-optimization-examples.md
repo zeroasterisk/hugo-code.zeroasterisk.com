@@ -404,8 +404,7 @@ I felt like trying out a few more variations on how things can be loaded.
 > and checkout the `07-profiling` branch.
 
 - [x] import (static) `lodash.cloneDeep` = `8.9kb` [screenshot](https://puu.sh/wc2Gs/f694dacc7b.png)
-- [x] import (static) `lodash/cloneDeep` = `19.5kb` [screenshot](https://puu.sh/wc2Lq/88f9db3c45.png)
- + [screenshot2](https://puu.sh/wc2KD/c333e1834e.png)
+- [x] import (static) `lodash/cloneDeep` = `19.5kb` [screenshot](https://puu.sh/wc2Lq/88f9db3c45.png) [screenshot2](https://puu.sh/wc2KD/c333e1834e.png)
 
 
 # Summary
