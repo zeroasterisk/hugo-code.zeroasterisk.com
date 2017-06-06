@@ -271,6 +271,7 @@ Come back to this when you&rsquo;re comfortable and want to optimize an existing
 <li><a href="#built-in-optimization-each-component-is-only-imported-1-time">Built In Optimization: Each Component IS Only Imported 1 Time</a></li>
 </ul></li>
 <li><a href="#experiments-what-can-you-do-with-dynamic-imports">Experiments: What can you do with dynamic imports?</a></li>
+<li><a href="#experiments-profiling-imports">Experiments: Profiling imports?</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#thanks-credits">Thanks &amp; Credits</a></li>
 </ul>
@@ -678,7 +679,7 @@ and the response with the dynamic import payload.</p>
 and checkout the <code>06-experiments</code> branch.</p>
 </blockquote>
 
-<p>I conducted a few experiemnts (more below) and I now better understand how the imports work.</p>
+<p>I conducted a few experiments (more below) and I now better understand how the imports work.</p>
 
 <p>Here is an obvious structure of components:</p>
 
@@ -725,6 +726,18 @@ and checkout the <code>06-experiments</code> branch.</p>
 <li><input type="checkbox" disabled class="task-list-item"> import as shared function, path as arg <em>(fails, can not find the path)</em></li>
 <li><input type="checkbox" disabled class="task-list-item"> import a npm package directly <em>(fails)</em></li>
 <li><input type="checkbox" checked disabled class="task-list-item"> import a component that imports a component <em>(works, and a good idea, within reason)</em></li>
+</ul>
+
+<h1 id="experiments-profiling-imports">Experiments: Profiling imports?</h1>
+
+<blockquote>
+<p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
+and checkout the <code>07-profiling</code> branch.</p>
+</blockquote>
+
+<ul class="task-list">
+<li><input type="checkbox" checked disabled class="task-list-item"> import (static) <code>lodash.cloneDeep</code> = <code>8.9kb</code> <a href="https://puu.sh/wc2Gs/f694dacc7b.png">screenshot</a></li>
+<li><input type="checkbox" checked disabled class="task-list-item"> import (static) <code>lodash/cloneDeep</code> = <code>19.5kb</code> <a href="https://puu.sh/wc2Lq/88f9db3c45.png">screenshot</a> <a href="https://puu.sh/wc2KD/c333e1834e.png">screenshot2</a></li>
 </ul>
 
 <h1 id="summary">Summary</h1>
