@@ -6,10 +6,28 @@
     <description>Recent content in Code learning on zeroasterisk talks code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 31 May 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Jun 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://code.zeroasterisk.com/categories/code-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Meteor and Elixir (part one) A Rocky Courtship</title>
+      <link>https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/</guid>
+      <description>&lt;p&gt;I have been watching Elixir for almost 2 years now, and debating if it&amp;rsquo;s mature enough for me to invest in.&lt;/p&gt;
+
+&lt;p&gt;Obviously Erlang is super-mature, and Elixir is quite stable, but it&amp;rsquo;s a question of &amp;ldquo;is the community mature enough yet?&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;Since I&amp;rsquo;m now writing this, I believe it is &amp;ldquo;ready&amp;rdquo;, and I&amp;rsquo;m beginning a journey to build out some services in Elixir
+to stand up next to existing node services (meteorjs) and slow move funcitonality over to to Elixir.&lt;/p&gt;
+
+&lt;p&gt;Chapter One: &lt;strong&gt;Proof of Concept, Mongo is supposed to be Simple.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Meteor 1.5 ~ Bundle Optimization &#43; Examples</title>

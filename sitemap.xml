@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/</loc>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/</loc>
     <lastmod>2017-05-31T00:00:00+00:00</lastmod>
   </url>
@@ -50,7 +55,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/categories/code-learning/</loc>
-    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -67,6 +72,18 @@
   </url>
   
   <url>
+    <loc>https://code.zeroasterisk.com/tags/ecto/</loc>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.zeroasterisk.com/tags/elixir/</loc>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://code.zeroasterisk.com/categories/elixir/</loc>
     <lastmod>2017-01-01T23:37:35-04:00</lastmod>
     <priority>0</priority>
@@ -75,6 +92,12 @@
   <url>
     <loc>https://code.zeroasterisk.com/tags/es7/</loc>
     <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.zeroasterisk.com/tags/exploration/</loc>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -140,13 +163,19 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/tags/meteor/</loc>
-    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://code.zeroasterisk.com/categories/meteorjs/</loc>
     <lastmod>2014-09-09T21:41:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://code.zeroasterisk.com/tags/mongo/</loc>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -175,8 +204,14 @@
   </url>
   
   <url>
+    <loc>https://code.zeroasterisk.com/tags/packages/</loc>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://code.zeroasterisk.com/post/</loc>
-    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -194,7 +229,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/tags/</loc>
-    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -206,7 +241,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/</loc>
-    <lastmod>2017-05-31T00:00:00+00:00</lastmod>
+    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

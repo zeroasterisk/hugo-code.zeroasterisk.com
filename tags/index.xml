@@ -6,10 +6,28 @@
     <description>Recent content in Tags on zeroasterisk talks code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 31 May 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Jun 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://code.zeroasterisk.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Ecto</title>
+      <link>https://code.zeroasterisk.com/tags/ecto/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/ecto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Elixir</title>
+      <link>https://code.zeroasterisk.com/tags/elixir/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/elixir/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Es7</title>
@@ -17,6 +35,15 @@
       <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
       
       <guid>https://code.zeroasterisk.com/tags/es7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exploration</title>
+      <link>https://code.zeroasterisk.com/tags/exploration/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/exploration/</guid>
       <description></description>
     </item>
     
@@ -77,9 +104,18 @@
     <item>
       <title>Meteor</title>
       <link>https://code.zeroasterisk.com/tags/meteor/</link>
-      <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
       
       <guid>https://code.zeroasterisk.com/tags/meteor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mongo</title>
+      <link>https://code.zeroasterisk.com/tags/mongo/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/mongo/</guid>
       <description></description>
     </item>
     
@@ -107,6 +143,15 @@
       <pubDate>Wed, 31 May 2017 00:00:00 +0000</pubDate>
       
       <guid>https://code.zeroasterisk.com/tags/optimization/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Packages</title>
+      <link>https://code.zeroasterisk.com/tags/packages/</link>
+      <pubDate>Fri, 23 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://code.zeroasterisk.com/tags/packages/</guid>
       <description></description>
     </item>
     

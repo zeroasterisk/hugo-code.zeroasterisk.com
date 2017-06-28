@@ -1,0 +1,965 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.20.7">
+    <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
+    <title>Meteor and Elixir (part one) A Rocky Courtship</title>
+    <meta name="author" content="Alan Blount">
+    <meta name="keywords" content=", development, code, superpowers">
+
+    <link rel="icon" href="https://code.zeroasterisk.com/favicon.png">
+    
+
+    
+    <meta name="description" content="A story of getting Elixir to play nice with Mongo, for a MeteorJS application">
+    <meta property="og:description" content="A story of getting Elixir to play nice with Mongo, for a MeteorJS application">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Meteor and Elixir (part one) A Rocky Courtship">
+    <meta property="og:url" content="/2017/06/meteor-and-elixir-rocky-courtship/">
+    <meta property="og:site_name" content="zeroasterisk talks code">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="zeroasterisk talks code">
+    <meta name="twitter:description" content="A story of getting Elixir to play nice with Mongo, for a MeteorJS application">
+    
+      <meta name="twitter:creator" content="@zeroasterisk">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/29e2d6431d4a86cdc18df0dd4c699a38?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://code.zeroasterisk.com/css/style-u6mk0ojoywresbx8iepslrmmhl4stuhrsxuwhkpwrkrx7mryjcaimasnk4pi.min.css" />
+    
+    
+
+    
+      
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-2011466-10', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://code.zeroasterisk.com/">zeroasterisk talks code</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://code.zeroasterisk.com/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/29e2d6431d4a86cdc18df0dd4c699a38?s=90" alt="" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://code.zeroasterisk.com/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/29e2d6431d4a86cdc18df0dd4c699a38?s=110" alt="" />
+        </a>
+        <h4 class="sidebar-profile-name">Alan Blount</h4>
+        
+          <h5 class="sidebar-profile-bio"><strong>Learning to Code</strong> is like <strong>Aquiring Superpowers</strong>.<br/><br/>If you are interested in being a better programmer, I&rsquo;d like to help. I too am always trying to improve and learn new things.<br/><br/><em><a href="http://imgur.com/7l3mEH9">We&rsquo;re in it together</a></em></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://code.zeroasterisk.com/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://code.zeroasterisk.com/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://code.zeroasterisk.com/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://stackoverflow.com/users/194105/zeroasterisk" target="_blank">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-stack-overflow"></i>
+      
+      <span class="sidebar-button-desc">Stack Overflow</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/zeroasterisk" target="_blank">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://code.zeroasterisk.com/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Meteor and Elixir (part one) A Rocky Courtship
+    </h1>
+  
+  <div class="postShorten-meta post-meta">
+  
+    <time itemprop="datePublished" datetime="2017-06-23T00:00:00Z">
+      
+   23, 2017
+
+    </time>
+  
+  
+  
+  
+    <span></span>
+    
+      <a class="category-link" href="https://code.zeroasterisk.com/categories/code-learning">code learning</a>
+    
+  
+
+
+</div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>I have been watching Elixir for almost 2 years now, and debating if it&rsquo;s mature enough for me to invest in.</p>
+
+<p>Obviously Erlang is super-mature, and Elixir is quite stable, but it&rsquo;s a question of &ldquo;is the community mature enough yet?&rdquo;</p>
+
+<p>Since I&rsquo;m now writing this, I believe it is &ldquo;ready&rdquo;, and I&rsquo;m beginning a journey to build out some services in Elixir
+to stand up next to existing node services (meteorjs) and slow move funcitonality over to to Elixir.</p>
+
+<p>Chapter One: <strong>Proof of Concept, Mongo is supposed to be Simple.</strong></p>
+
+<p></p>
+
+<blockquote>
+<p>If you&rsquo;re not already familiar with any of these tools:
+- [Elixir you should checkout the <a href="https://meteor.com/">meteor website</a>
+If you&rsquo;re not already familiar with Meteor you should checkout the <a href="https://meteor.com/">meteor website</a>
+Come back to this when you&rsquo;re comfortable and want to optimize an existing application.</p>
+</blockquote>
+
+<h1 id="table-of-contents"></h1><nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#goals">Goals</a>
+<ul>
+<li><a href="#why">Why?</a></li>
+</ul></li>
+<li><a href="#getting-started">Getting Started</a>
+<ul>
+<li><a href="#install-elixir">install elixir</a></li>
+<li><a href="#install-phoenix">install phoenix</a></li>
+<li><a href="#build-a-new-phoenix-app">build a new phoenix app</a></li>
+<li><a href="#add-mongodb-ecto-to-connect-to-mongo-but-with-ecto-awesomeness">add mongodb_ecto (to connect to Mongo, but with Ecto awesomeness)</a></li>
+<li><a href="#add-absinthe-for-graphql">add absinthe (for GraphQL)</a></li>
+<li><a href="#edit-config-to-get-to-the-database">edit config to get to the database</a></li>
+<li><a href="#get-deps-sanity-check">get deps &amp; sanity check</a></li>
+<li><a href="#extra-work-for-testing">extra work for testing</a></li>
+</ul></li>
+<li><a href="#build-our-application">Build Our Application</a></li>
+</ul></li>
+</ul>
+</nav>
+
+<h2 id="goals">Goals</h2>
+
+<p>Build an elixir+phoenix application which will connect to an existing MongoDB
+for an existing MeteorJS/Node application, and expose functionality via a GraphQL API.</p>
+
+<ul>
+<li>database and schema un-changeable, must match what is already there, in Mongo</li>
+<li>authentication must piggyback/use <a href="https://guide.meteor.com/accounts.html">Meteor Accounts</a></li>
+<li>permissions must re-implement functionality of <a href="https://github.com/alanning/meteor-roles">Meteor Roles</a></li>
+<li>framework = elixir+phoenix <em>(more on why, below)</em></li>
+<li>graphql API to be handled via <a href="http://absinthe-graphql.org/">absinthe</a></li>
+</ul>
+
+<h3 id="why">Why?</h3>
+
+<p>GraphQL is badass.  It will replace REST, like REST replaced SOAP.</p>
+
+<p>I <em>could</em> make a GraphQL server for an existing Meteor application inside Meteor,
+or via a node API, or any other server side framework&hellip;</p>
+
+<p>But I&rsquo;ve been watching Elixir for a while and I&rsquo;m impressed by it&rsquo;s performace, HA, and syntax.
+Functional &amp; Parallel.
+<em>(<a href="https://www.youtube.com/watch?v=a-off4Vznjs&amp;feature=youtu.be">Dave Thomas Approves</a>)</em></p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<h3 id="install-elixir">install elixir</h3>
+
+<p>Nothing hard or tricky here&hellip;</p>
+
+<p><code>brew install elixir</code> <em>(for OSX, others for you)</em> and <code>mix</code></p>
+
+<h3 id="install-phoenix">install phoenix</h3>
+
+<p>I chose to install phoenix <code>1.3.0-rc2</code> because I read up on it and
+I think it&rsquo;s got some good changes (in app structure) and likely to land sometime soon-ish.</p>
+
+<p><code>mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez</code></p>
+
+<h3 id="build-a-new-phoenix-app">build a new phoenix app</h3>
+
+<p>Here&rsquo;s my command:</p>
+
+<p><code>mix phx.new --no-html --no-brunch --app e2mapi elixir-meteor-graphql</code></p>
+
+<ul>
+<li><code>--no-html</code> I don&rsquo;t need serverside rendering</li>
+<li><code>--no-brunch</code> I don&rsquo;t need elixir to build JS packages</li>
+<li><code>--app e2mapi</code> I have to give it a &ldquo;friendly&rdquo; app name</li>
+<li><code>elixir-meteor-graphql</code> My project folder</li>
+</ul>
+
+<p>I can then cd into the dir, (make it a git repo &amp; commit,) then edit the <code>mix.exs</code> file to change deps.</p>
+
+<h3 id="add-mongodb-ecto-to-connect-to-mongo-but-with-ecto-awesomeness">add mongodb_ecto (to connect to Mongo, but with Ecto awesomeness)</h3>
+
+<p>This should be as simple as adding in a mix package&hellip;
+But I ran into several problems with versions and mis-matching.</p>
+
+<p>I tried reverting to Phoenix 1.2, I tried various branches and tags of various packages.</p>
+
+<p>After coming up with a stable seeming combination
+<a href="https://github.com/michalmuskala/mongodb_ecto/pull/128">my PR was not accepted</a>
+and we are told to instead force the core <code>ecto</code> to <code>2.0</code>.</p>
+
+<p>There is no readme telling us this, and I think it&rsquo;s a temporary requirement,
+but it is currently a requirement.</p>
+
+<p>So - here is my <code>mix.exs</code> for mongo + ecto:</p>
+
+<pre><code class="language-ex">     {:mongodb_ecto, github: &quot;michalmuskala/mongodb_ecto&quot;, branch: &quot;ecto-2&quot;}, # &lt;-- using mongo
+     {:ecto, &quot;~&gt; 2.0&quot;, override: true}, # &lt;-- have to FORCE ecto version :(
+</code></pre>
+
+<p><em>(likely to change in the future, hopefully towards basic versions)</em></p>
+
+<h3 id="add-absinthe-for-graphql">add absinthe (for GraphQL)</h3>
+
+<p>Again this should be simple, but I ran into issues getting the adaptors to play nice,
+specifically with poison &amp; absinthe_ecto.</p>
+
+<p>Here&rsquo;s the combination which worked for me, now.</p>
+
+<pre><code class="language-ex">     # Poision 3.+ flags older phoenix ecto -- no breaking changes override:true
+     {:poison, &quot;~&gt; 3.1&quot;, override: true},
+     {:absinthe, &quot;~&gt; 1.3&quot;},
+     {:absinthe_ecto, git: &quot;https://github.com/absinthe-graphql/absinthe_ecto.git&quot;},
+     {:absinthe_plug, github: &quot;absinthe-graphql/absinthe_plug&quot;, branch: &quot;master&quot;}
+</code></pre>
+
+<p><em>(likely to change in the future, hopefully towards basic versions)</em></p>
+
+<h3 id="edit-config-to-get-to-the-database">edit config to get to the database</h3>
+
+<p>Ecto should now be able to <em>talk mongo</em> but it does not know who to talk to yet.</p>
+
+<p>Edit <code>config/dev.exs</code> and change the config at the bottom to be something like:</p>
+
+<pre><code class="language-ex"># Configure your database
+config :e2mapi, E2mapi.Repo,
+  adapter: Mongo.Ecto,
+  database: &quot;e2mapi_dev&quot;,
+  hostname: &quot;localhost&quot;
+  port: 27017
+</code></pre>
+
+<h3 id="get-deps-sanity-check">get deps &amp; sanity check</h3>
+
+<p>At this point, you should be able to get all deps without errors</p>
+
+<p><code>$ mix deps.get</code></p>
+
+<p>And you should be able to fire up <code>iex</code> and load your new (empty) phoenix server</p>
+
+<p><code>$ iex -S mix phx.server</code></p>
+
+<p>If it worked right you should see something like:</p>
+
+<pre><code>[info] Running E2mapi.Web.Endpoint with Cowboy using http://0.0.0.0:4000
+Interactive Elixir (1.4.4) - press Ctrl+C to exit (type h() ENTER for help)
+</code></pre>
+
+<p><em>(Can&rsquo;t connect to mongo?  Is mongo running locally?  Is the configuration correct?)</em></p>
+
+<h3 id="extra-work-for-testing">extra work for testing</h3>
+
+<p>Embrace testing.  If you have not already done so, <strong>now is your chance</strong>.</p>
+
+<p>Elixir makes it super easy to write tests.
+They are less fragile &amp; more powerful <em>(thanks to elixir syntax)</em>.
+And doctests support is crazy good too.</p>
+
+<p>Sadly, here too, <em>there are extra hoops to jump through</em> in order to get Ecto + Mongo playing nicely.</p>
+
+<p>First, the easy one, we have a test env to config, just like dev.</p>
+
+<p>Edit <code>config/test.exs</code> and change the config at the bottom to be something like:</p>
+
+<pre><code class="language-ex"># Configure your database
+config :e2mapi, E2mapi.Repo,
+  adapter: Mongo.Ecto,
+  database: &quot;e2mapi_test&quot;,
+  hostname: &quot;localhost&quot;
+  port: 27017
+</code></pre>
+
+<p>After doing so, I started getting errors like the following:</p>
+
+<pre><code>$ mix test
+Compiling 12 files (.ex)
+Generated e2mapi app
+** (RuntimeError) cannot configure sandbox with pool nil.
+To use the SQL Sandbox, configure your repository pool as:
+
+      pool: Ecto.Adapters.SQL.Sandbox
+
+    (ecto) lib/ecto/adapters/sql/sandbox.ex:429: Ecto.Adapters.SQL.Sandbox.mode/2
+    (elixir) lib/code.ex:370: Code.require_file/2
+    (elixir) lib/enum.ex:645: Enum.&quot;-each/2-lists^foreach/1-0-&quot;/2
+    (elixir) lib/enum.ex:645: Enum.each/2
+    (mix) lib/mix/tasks/test.ex:229: Mix.Tasks.Test.run/1
+</code></pre>
+
+<p>After doing some searching, I found &ldquo;SQL Sandbox&rdquo; code in several test files.</p>
+
+<pre><code>$ ag Sandbox
+test/support/channel_case.ex
+30:    :ok = Ecto.Adapters.SQL.Sandbox.checkout(E2mapi.Repo)
+32:      Ecto.Adapters.SQL.Sandbox.mode(E2mapi.Repo, {:shared, self()})
+
+test/support/conn_case.ex
+31:    :ok = Ecto.Adapters.SQL.Sandbox.checkout(E2mapi.Repo)
+33:      Ecto.Adapters.SQL.Sandbox.mode(E2mapi.Repo, {:shared, self()})
+
+test/support/data_case.ex
+29:    :ok = Ecto.Adapters.SQL.Sandbox.checkout(E2mapi.Repo)
+32:      Ecto.Adapters.SQL.Sandbox.mode(E2mapi.Repo, {:shared, self()})
+
+test/test_helper.exs
+3:Ecto.Adapters.SQL.Sandbox.mode(E2mapi.Repo, :manual)
+</code></pre>
+
+<p>I commented out the relevant sections and now <code>mix test</code> shows me green lights and my world is happy.</p>
+
+<pre><code>$ mix test
+Compiling 3 files (.ex)
+...
+
+Finished in 0.03 seconds
+3 tests, 0 failures
+
+Randomized with seed 649726
+</code></pre>
+
+<h2 id="build-our-application">Build Our Application</h2>
+
+<p>TODO&hellip; this is a work in progress&hellip;  I will come back with a part 2, soon.</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small"></span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/meteor/">meteor</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/mongo/">mongo</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/elixir/">elixir</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/ecto/">ecto</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/exploration/">exploration</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/packages/">packages</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml"></span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/" data-tooltip="Meteor 1.5 ~ Bundle Optimization &#43; Examples">
+          
+            <span class="hide-xs hide-sm text-small icon-mr"></span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#table-of-contents">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2017 <a href="https://github.com/zeroasterisk">zeroasterisk</a>. 
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml"></span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/" data-tooltip="Meteor 1.5 ~ Bundle Optimization &#43; Examples">
+          
+            <span class="hide-xs hide-sm text-small icon-mr"></span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#table-of-contents">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+        <i class="fa fa-google-plus"></i><span></span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+        <i class="fa fa-facebook-official"></i><span></span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f06%2fmeteor-and-elixir-rocky-courtship%2f">
+        <i class="fa fa-twitter"></i><span></span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/29e2d6431d4a86cdc18df0dd4c699a38?s=110" alt="" />
+    
+    <h4 id="about-card-name">Alan Blount</h4>
+    
+      <div id="about-card-bio"><strong>Learning to Code</strong> is like <strong>Aquiring Superpowers</strong>.<br/><br/>If you are interested in being a better programmer, I&rsquo;d like to help. I too am always trying to improve and learn new things.<br/><br/><em><a href="http://imgur.com/7l3mEH9">We&rsquo;re in it together</a></em></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Programmer at arms
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Louisville, KY, USA
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center"></div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/">
+                <h3 class="media-heading">Meteor and Elixir (part one) A Rocky Courtship</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jun 6, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>I have been watching Elixir for almost 2 years now, and debating if it&rsquo;s mature enough for me to invest in.</p>
+
+<p>Obviously Erlang is super-mature, and Elixir is quite stable, but it&rsquo;s a question of &ldquo;is the community mature enough yet?&rdquo;</p>
+
+<p>Since I&rsquo;m now writing this, I believe it is &ldquo;ready&rdquo;, and I&rsquo;m beginning a journey to build out some services in Elixir
+to stand up next to existing node services (meteorjs) and slow move funcitonality over to to Elixir.</p>
+
+<p>Chapter One: <strong>Proof of Concept, Mongo is supposed to be Simple.</strong></p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2017/05/meteor-1-5-bundle-optimization/">
+                <h3 class="media-heading">Meteor 1.5 ~ Bundle Optimization &#43; Examples</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>I have been playing with <a href="https://meteor.com/">Meteor</a> 1.5 and it&rsquo;s dynamic imports,
+which can be used to reduce the amount of javascript code sent to the browser.</p>
+
+<p>This article is a deep dive into how to profile and optimize your client side code
+to make smarter use of the new dynamic imports&hellip;</p>
+
+<p>Which will make <strong>meteor load faster for your users</strong>.</p>
+
+<p></p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2017/05/why-wait-adopt-hugo-for-static-site-generation/">
+                <h3 class="media-heading">Why wait? Adopt hugo for Static Site Generation</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Why&hellip; oh why&hellip; why did I wait so long?
+I&rsquo;ve been talking about switching to a static site generator for years, since jekyllrb started gaining popularity.
+I understood the benefits, but I had no compelling reason to switch&hellip; (sort of how I resisted git for a few years because svn worked well enough)
+But who wants a WordPress site?
+Well, ok, maybe you are using 12 plugins and doing fancy stuff.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2017/01/2017-nerd-goals/">
+                <h3 class="media-heading">2017 nerd goals</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"> Personal Nerd Goals  publish - rejuvinate a history of developer advocacy learn elixir - build a couple of projects from a couple of angles learn machine learning basics  </div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2014/09/09/meteor-092rc1-with-cordova/">
+                <h3 class="media-heading">Meteor 0.9.2-rc1 is fun to play with, Cordova support functional</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2014
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Last night I started playing with `meteor &#8211;release 0.9.2-rc1` which you can read about and play with too; check it out here:
+https://meteor.hackpad.com/Getting-Started-With-Cordova-Z5n6zkVB1xq
+It&#8217;s wonderful!
+The local development and hot-code-push is a great improvement over any other solution I&#8217;ve been using. Builds were painless (mostly).
+Most of my stumbling points were due to 9x, not the new Cordova stuff.
+A few interesting details&#8230;
+Cordova gets built here:
+$ ll -a .</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2014/04/24/great-advice-from-arunoda-contribute/">
+                <h3 class="media-heading">Great advice from Arunoda “Just Contribute!”</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2014
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">http://readme.lk/noticed-tech-crowd-interview-arunoda-susiripala/
+This advice might be aimed at people who already consider themselves developers, but there&#8217;s a nugget in there that&#8217;s perfect for anyone who is interested in getting started&#8230;
+Pick some open-source project, probably a smaller one, that does something you&#8217;re interested in. Maybe it&#8217;s something you tried out and used. Maybe it&#8217;s something you tried out and it didn&#8217;t work out. Maybe it&#8217;s something you looked at and didn&#8217;t understand.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/2013/08/22/meteor-phonegapcordova-roundup-fall-2013/">
+                <h3 class="media-heading">Meteor &#43; PhoneGap/Cordova (Roundup – Fall 2013)</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2013
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">UPDATE: see meteor-core-cordova-support-alpha-release-is-out (2014-08-25) for new information
+&nbsp;
+About Meteor and PhoneGap / Cordova Meteor is a rapid server/client development framework, written in JS &#8211; makes very interactive apps easy to build. http://meteor.com
+PhoneGap / Cordova is a project to allow developers to use HTML, CSS, and JS to build mobile apps for all major devices. http://phonegap.com
+Basics of Integrating Meteor + PhoneGap / Cordova The basic idea here is to use PhoneGap / Cordova to create a mobile App on several different platforms at once and it gives device hardware access; then “load” your Meteor application, which handles all of the rest of whatever you want your app to do.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://code.zeroasterisk.com/post/">
+                <h3 class="media-heading">Posts</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jun 6, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero=""
+         data-message-one=""
+         data-message-other="">
+         8 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('http://cdn.wallpapersafari.com/58/63/CbN6Ht.jpg');"></div>
+  
+
+
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js"></script>
+
+
+<script src="https://code.zeroasterisk.com/js/script-wl33z0n6ocaypepiqrazthtivfrliqijej4rq8ek8gvrv1awftmgjuv8k4zc.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight').each(function(i, block) {
+    var code = "";
+    hljs.highlightAuto(block.innerText).value.split(/\r\n|\r|\n/).forEach(function(line) {
+      code += "<span class=\"line\">" + line + "</span><br>";
+    });
+    if (code.length > 0) {
+      block.innerHTML = code;  
+    }
+  });
+  $('pre > code').each(function(i, block) {
+    $(this).addClass('codeblock');
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/code.zeroasterisk.com\/2017\/06\/meteor-and-elixir-rocky-courtship\/';
+          
+            this.page.identifier = '\/2017\/06\/meteor-and-elixir-rocky-courtship\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'zeroasterisk';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+
+    
+  </body>
+</html>
+
