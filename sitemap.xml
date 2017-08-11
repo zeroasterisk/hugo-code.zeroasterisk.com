@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://code.zeroasterisk.com/2017/07/elixir-ftw-it-really-is/</loc>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/</loc>
     <lastmod>2017-06-23T00:00:00+00:00</lastmod>
   </url>
@@ -55,7 +60,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/categories/code-learning/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -73,13 +78,13 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/tags/ecto/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://code.zeroasterisk.com/tags/elixir/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -97,7 +102,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/tags/exploration/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -205,13 +210,13 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/tags/packages/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://code.zeroasterisk.com/post/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -229,7 +234,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/tags/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -241,7 +246,7 @@
   
   <url>
     <loc>https://code.zeroasterisk.com/</loc>
-    <lastmod>2017-06-23T00:00:00+00:00</lastmod>
+    <lastmod>2017-07-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

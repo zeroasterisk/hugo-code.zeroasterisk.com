@@ -1,5 +1,9 @@
 
 
+  
+    
+  
+
 
   
 
@@ -19,25 +23,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.20.7">
     <meta name="theme" content="Tranquilpeak 0.3.1-BETA">
-    <title>Mongo</title>
+    <title>Playing with Elixir is just FUN</title>
     <meta name="author" content="Alan Blount">
     <meta name="keywords" content=", development, code, superpowers">
 
     <link rel="icon" href="https://code.zeroasterisk.com/favicon.png">
     
-      <link rel="alternate" type="application/rss+xml" title="RSS" href="https://code.zeroasterisk.com/tags/mongo/index.xml">
-    
 
     
-    <meta name="description" content="Aquire Superpowers - Let&#39;s all learn how to code/dev/devops">
-    <meta property="og:description" content="Aquire Superpowers - Let&#39;s all learn how to code/dev/devops">
+    <meta name="description" content="Elixir really is as nice as you&#39;ve been hearing">
+    <meta property="og:description" content="Elixir really is as nice as you&#39;ve been hearing">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Mongo">
-    <meta property="og:url" content="/tags/mongo/">
+    <meta property="og:title" content="Playing with Elixir is just FUN">
+    <meta property="og:url" content="/2017/07/elixir-ftw-it-really-is/">
     <meta property="og:site_name" content="zeroasterisk talks code">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="zeroasterisk talks code">
-    <meta name="twitter:description" content="Aquire Superpowers - Let&#39;s all learn how to code/dev/devops">
+    <meta name="twitter:description" content="Elixir really is as nice as you&#39;ve been hearing">
     
       <meta name="twitter:creator" content="@zeroasterisk">
     
@@ -84,7 +86,7 @@ ga('send', 'pageview');
 
   <body>
     <div id="blog">
-      <header id="header" data-behavior="1">
+      <header id="header" data-behavior="4">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
     <a class="header-title-link" href="https://code.zeroasterisk.com/">zeroasterisk talks code</a>
@@ -104,7 +106,7 @@ ga('send', 'pageview');
   
 </header>
 
-      <nav id="sidebar" data-behavior="1">
+      <nav id="sidebar" data-behavior="4">
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
@@ -190,38 +192,24 @@ ga('send', 'pageview');
 </nav>
 
       
-        
 
-      
-      <div id="main" data-behavior="1"
+      <div id="main" data-behavior="4"
         class="
                hasCoverMetaIn
                ">
-        
-          <section class="postShorten-group main-content-wrap">
-            
-            
-              
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
   
-    
+    <h1 class="post-title" itemprop="headline">
+      Playing with Elixir is just FUN
+    </h1>
   
-
-
+  <div class="postShorten-meta post-meta">
   
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/">
-          Meteor and Elixir (part one) A Rocky Courtship
-        </a>
-      </h1>
-      <div class="postShorten-meta post-meta">
-  
-    <time itemprop="datePublished" datetime="2017-06-23T00:00:00Z">
-      2017-06-23
+    <time itemprop="datePublished" datetime="2017-07-10T00:00:00Z">
+      2017-07-10
     </time>
   
   <i class="fa fa-chevron-right"></i>
@@ -237,33 +225,294 @@ ga('send', 'pageview');
 
 </div>
 
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      <p>
-        I have been watching Elixir for almost 2 years now, and debating if it&rsquo;s mature enough for me to invest in.</p>
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>I&rsquo;ve been using Elixir for a few weeks now, sometimes
+<a href="https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/">forcing it to play nice with Mongodb/Meteor</a>
+, which it doesn&rsquo;t really want to do.
+Sometimes with Posgres <em>(which it loves)</em>.
+Sometimes just plain ole&rsquo; Elixir with no persistance.</p>
 
-<p>Obviously Erlang is super-mature, and Elixir is quite stable, but it&rsquo;s a question of &ldquo;is the community mature enough yet?&rdquo;</p>
+<p>It <em>is</em> realllllly fun!</p>
 
-<p>Since I&rsquo;m now writing this, I believe it is &ldquo;ready&rdquo;, and I&rsquo;m beginning a journey to build out some services in Elixir
-to stand up next to existing node services (meteorjs) and slow move funcitonality over to to Elixir.</p>
+<p></p>
 
-<p>Chapter One: <strong>Proof of Concept, Mongo is supposed to be Simple.</strong></p>
+<p>You know when everyone tells you to watch a movie?
+Sometimes it sucks (and sometimes it sucks <em>because</em> everyone told you to watch it).
+Sometimes it&rsquo;s ok and you can kind of understand why people told you to watch it.
+Sometimes it <em>is totally awesome</em>.</p>
 
-<p>
-        <br>
-        <a href="https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/" class="postShorten-excerpt_link link"></a>
-        
-      </p>
-    </div>
-  </div>
-  
-</article>
+<h1 id="elixir-really-is-as-nice-as-you-ve-been-hearing">Elixir really <em>is</em> as nice as you&rsquo;ve been hearing</h1>
+
+<p>Why?</p>
+
+<p>I assume you already know&hellip;</p>
+
+<p>If not, go <a href="https://medium.com/search?q=elixir">search &ldquo;elixir&rdquo; on medium</a> &mdash; ummm&hellip; yeah.</p>
+
+<p>Fast, stable, scalable, effecient&hellip;</p>
+
+<p>Ok it&rsquo;s not perfect - erlang can be quite chatty and slow for some purposes&hellip;</p>
+
+<p>But erlang has got TONs of real-world engineering behind it, and it scales super-well.</p>
+
+<p>And then you add the Elixir layer and the choice becomes easy&hellip;</p>
+
+<h1 id="table-of-contents"></h1><nav id="TableOfContents">
+<ul>
+<li><a href="#elixir-really-is-as-nice-as-you-ve-been-hearing">Elixir really <em>is</em> as nice as you&rsquo;ve been hearing</a></li>
+<li><a href="#functional-programming-and-the-glorious-pipe">Functional programming and the glorious pipe</a></li>
+<li><a href="#pattern-matching-makes-me-smarter">Pattern matching makes me smarter</a></li>
+<li><a href="#tooling-for-days-testing-and-docs-reliable-compiler-strict-but-flexible">Tooling for days - testing and docs - reliable compiler - strict but flexible</a></li>
+<li><a href="#quality-maintainability">Quality &amp; Maintainability</a></li>
+</ul>
+</nav>
+
+<p>I know, this is what Ruby programmers were saying back in the day.
+In fact a lot of the community behind Elixir are Rubyists.
+But back in the day, when Ruby was saying that, Ruby was slow as a dog.
+It&rsquo;s since gotten a lot faster, but it&rsquo;s not even close to comparing with the scaling effeciency of Erlang.</p>
+
+<h1 id="functional-programming-and-the-glorious-pipe">Functional programming and the glorious pipe</h1>
+
+<p>Also, I&rsquo;ve been doing Object Oriented Programming for a long time
+<em>(in PHP, Node, Python - so, ummm, it&rsquo;s been a fight)</em>.
+A lot of programming is all about managing <em>state</em> and objects make a lot of sense&hellip;
+Keep the state organized, know it&rsquo;s boundaries.</p>
+
+<p>But I&rsquo;ve gotta tell you, and functional programming is a joy.
+There state is even further removed, it&rsquo;s not a part of your code/function at all &mdash;
+you remove all the state to outside the scope of <em>your code</em> and persist to database or in memory stores,
+and then all of your code is pure passthrough transformations and logic.</p>
+
+<p>And transformations are exactly what the pipe opperator was built for.</p>
+
+<p>Here&rsquo;s a super quick example.</p>
+
+<p>Take a list of strings, map each one of them into a list of upper case strings, then make the list unique/distinct, then sort it.</p>
+
+<p><em>(for now, ignore that <code>&amp;</code> and the <code>/1</code> thing &mdash; it makes a lot of sense but might look wonky for now)</em></p>
+
+<pre><code class="language-ex">def my_func(list_of_strings) do
+  list_of_strings |&gt; Enum.map(&amp;String.capitalize/1) |&gt; Enum.uniq |&gt; Enum.sort
+end
+</code></pre>
+
+<p>The pipe opporator <code>|&gt;</code> basically says,
+<em>&ldquo;staring with some thing, do something to it, and pass it along&rdquo;</em>.
+The next function after the <code>|&gt;</code> recieves the output of the thing on the left, as it&rsquo;s first argument&hellip;
+you can pass in second, third, etc.  Whatever you output, goes on to the next function.</p>
+
+<p>That is most of what we want to do in programming, but we usually have to do it all backwards&hellip;</p>
+
+<p>Here is the same as above, in Javascript:</p>
+
+<pre><code class="language-js">const my_func = (list_of_strings) =&gt; {
+  return Array.from(new Set(list_of_strings.map(s =&gt; s.toUpperCase()))).sort
+}
+</code></pre>
+
+<p>Not terrible, we can chain the sort, and could possibly have made this more elegant in several ways&hellip;
+We could use one of the great functional libraries for Javascript, like <a href="http://ramdajs.com">ramdajs</a>,
+but it&rsquo;s still difficult to pass along content to the next function in the chain&hellip;
+more often, we do something, and wrap that in the next step, so our input/argument is the most deeply nested part of the function.</p>
+
+<p>Here is the same as above, in Python:</p>
+
+<pre><code class="language-py">def my_func(list_of_strings):
+  return sorted(list(set([s.upper() for s in list_of_strings])))
+</code></pre>
+
+<p>It&rsquo;s actually pretty nice - the array comprehension is bad-ass.
+The functions are all distinct and fairly obvious.</p>
+
+<p>But the progress, from one step to the next, is always backwards.</p>
+
+<p>It seems like such a little thing, but once you get used to it - not having it is annoying.</p>
+
+<h1 id="pattern-matching-makes-me-smarter">Pattern matching makes me smarter</h1>
+
+<p>I don&rsquo;t think I&rsquo;m going to put in the animated gif of a mind-blowing person here&hellip;
+but know that I thought about it.</p>
+
+<pre><code class="language-ex">def my_func(%{&quot;material&quot;: &quot;wood&quot;} = instructions) do
+  Map.merge(instructions, %{&quot;tool&quot; =&gt; &quot;nails&quot;})
+end
+def my_func(%{&quot;material&quot;: &quot;metal&quot;} = instructions) do
+  Map.merge(instructions, %{&quot;tool&quot; =&gt; &quot;welder&quot;})
+end
+def my_func(%{&quot;material&quot;: &quot;sever&quot;} = instructions) do
+  Map.merge(instructions, %{&quot;tool&quot; =&gt; &quot;elixir&quot;})
+end
+</code></pre>
+
+<p>Because of pattern matching, almost all of your logic can be avoided.</p>
+
+<p>Seriously, how much of your code looks like: <em>&ldquo;if I got this input, do this, otherwise, if I got this input do that, otherwise if I got this other input, do something else&rdquo;</em>.</p>
+
+<p>Instead of all of that, you can define the same function, and look for different inputs, and do different things&hellip;
+<em>Every function is a router.</em></p>
+
+<p>It can also allow you to easily destructure from the function definition line, and extract variables and compare values.:w</p>
+
+<h1 id="tooling-for-days-testing-and-docs-reliable-compiler-strict-but-flexible">Tooling for days - testing and docs - reliable compiler - strict but flexible</h1>
+
+<p>I am very impressed with the tooling for Elixir.
+Developer experience is obviously very important for this community and it shows.</p>
+
+<p>Testing is fast and easy, convenient, and common.</p>
+
+<p>Documentation is primarily done via <code>@doc</code> blocks in code, and generated into HTML via <code>ex_doc</code>.</p>
+
+<p>Tying both of those together, the doctesting is very impressive&hellip;</p>
+
+<pre><code>  @doc &quot;&quot;&quot;
+  Here is a list to upper, uniquer, sorter (I know you've always wanted it!)
+
+  Examples
+
+      iex&gt; MyModule.my_func([&quot;a&quot;, &quot;A&quot;, &quot;a&quot;, &quot;b&quot;])
+      [&quot;A&quot;, &quot;B&quot;])
+
+      iex&gt; MyModule.my_func([])
+      [])
+
+  &quot;&quot;&quot;
+</code></pre>
+
+<p>Basically - you describe your function in the normal doc block
+<em>(since you know it will be rendered to HTML and read, you usually care more)</em>
+and then you provide examples of how to use the function and what you expect to get out&hellip;</p>
+
+<p>But here&rsquo;s the amazing thing&hellip; the Examples show up in your documentation, nicely formatted,
+<em>and</em> they also are executed as unit tests&hellip;</p>
+
+<p><em>(thanks python for this one - still the implementation is so much simpler/faster/cleaner in Elixir)</em></p>
+
+<p>I also love that the compiler tells me about most of my errors.</p>
+
+<p>Credo is a great linter, which I didn&rsquo;t have to spend a month configuring,
+and didn&rsquo;t have to decide
+<a href="https://stackoverflow.com/a/17903018/194105">if semi-colons were in this year or not</a>.</p>
+
+<p>Bascially - even for web tools - for most of the work I&rsquo;m doing, I setup <code>test.watch</code>
+and I never actually have to look at the browser/API until I&rsquo;m pretty confident things are working under-the-hood.
+I always get a warm glow when that works out, and I can usually get there with other languages,
+but there were no obsticales with Elixir.</p>
+
+<h1 id="quality-maintainability">Quality &amp; Maintainability</h1>
+
+<p>As you can tell, I&rsquo;ve drunk the kool-aid a bit.
+I&rsquo;m happy with Elixir.</p>
+
+<p>I&rsquo;m not as fast with it as I expected to be.
+There is a lot to (re)learn, but more-to-the fact,
+Elixir kindof forces you to be a better developer.
+The strong discouragement of <code>if</code> conditionals, and to take advantage of pattern matching,
+helps me to take fewer shortcuts &ndash; no procedural sprawl, all small functions.
+The great testing experience encourages TDD and more test coverage.
+The great docs encourages you to be nice to future developers.</p>
+
+<p>I have a feeling that the stuff I build in Elixir will be stable and solid for a while
+and a lot easier to maintain.</p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small"></span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/elixir/">elixir</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/ecto/">ecto</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/exploration/">exploration</a>
+
+  <a class="tag tag--primary tag--small" href="https://code.zeroasterisk.com//tags/packages/">packages</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml"></span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/" data-tooltip="Meteor and Elixir (part one) A Rocky Courtship">
+          
+            <span class="hide-xs hide-sm text-small icon-mr"></span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#table-of-contents">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
 
             
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
             
-
-          </section>
-        
+          </div>
+        </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
     &copy; 2017 <a href="https://github.com/zeroasterisk">zeroasterisk</a>. 
@@ -271,6 +520,92 @@ to stand up next to existing node services (meteorjs) and slow move funcitonalit
 </footer>
 
       </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  <nav>
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+            <i class="fa fa-angle-left"></i>
+            <span class="hide-xs hide-sm text-small icon-ml"></span>
+          </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="https://code.zeroasterisk.com/2017/06/meteor-and-elixir-rocky-courtship/" data-tooltip="Meteor and Elixir (part one) A Rocky Courtship">
+          
+            <span class="hide-xs hide-sm text-small icon-mr"></span>
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </nav>
+  <ul class="post-actions post-action-share">
+    
+      <li class="post-action hide-lg hide-md hide-sm">
+        <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+          <i class="fa fa-share-alt"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+          <i class="fa fa-google-plus"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+          <i class="fa fa-facebook-official"></i>
+        </a>
+      </li>
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+    
+    
+      <li class="post-action">
+        <a class="post-action-btn btn btn--default" href="#disqus_thread">
+          <i class="fa fa-comment-o"></i>
+        </a>
+      </li>
+    
+    <li class="post-action">
+      
+        <a class="post-action-btn btn btn--default" href="#table-of-contents">
+      
+        <i class="fa fa-list"></i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <ul class="share-options">
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+        <i class="fa fa-google-plus"></i><span></span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+        <i class="fa fa-facebook-official"></i><span></span>
+      </a>
+    </li>
+    <li class="share-option">
+      <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fcode.zeroasterisk.com%2f2017%2f07%2felixir-ftw-it-really-is%2f">
+        <i class="fa fa-twitter"></i><span></span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
     </div>
     
     <div id="about">
@@ -562,6 +897,32 @@ $(document).ready(function() {
   });
 });
 </script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/code.zeroasterisk.com\/2017\/07\/elixir-ftw-it-really-is\/';
+          
+            this.page.identifier = '\/2017\/07\/elixir-ftw-it-really-is\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'zeroasterisk';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
 
 
 
