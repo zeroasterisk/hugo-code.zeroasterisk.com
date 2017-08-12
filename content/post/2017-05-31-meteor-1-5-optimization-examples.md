@@ -136,6 +136,10 @@ npm run start-as-prod
 # ^ if you don't have my package.json scripts, you would run
 #   meteor --production
 ```
+> **UPDATE** there is a new meteor 1.5.1+ feature where you don't have to add the package
+> you can just add it for the start...
+> `meteor --extra-packages bundle-visualizer --production`
+> which I have setup in `package.json` as `npm run start-profiled`
 
 Then an overlay happens in your browser and you can hover over parts to see what they total size is for the part, and it's children...
 
@@ -245,7 +249,7 @@ import PickDates from './PickDates';
 **after: dynamic import** no longer a part of clientside bundle
 
 ```js
-import Loader from 'react-loader';
+import Loader from 'react-loadable';
 
 // generic loading component to show while transfering section of code
 const LoadingComponent = () => <span className="text-muted"><i className="fa fa-refresh" /></span>;
@@ -254,21 +258,26 @@ const PickDates = Loader({
   // this does the dynamic import, and returns a promise
   loader: () => import('./PickDates'),
   // this is our generic loading display (optional)
-  LoadingComponent,
+  loading: LoadingComponent,
   // this is a delay before we decide to show our LoadingComponent (optional)
   delay: 200,
 });
+
+// there are more options you can use,
+// including a timeout, and even a pre-loader... NEAT!
 ```
 
 It can get a lot more complex, but this is a fine place to start.
 
-1. `react-loader` is a [HOC](https://facebook.github.io/react/docs/higher-order-components.html)
+1.  [react-loadable](https://github.com/thejameskyle/react-loadable)
+is a [HOC](https://facebook.github.io/react/docs/higher-order-components.html)
 which will render our component when it's available.
 2. The `loader: <func>` function recieves a promise which resolves as soon as the dynamic import is done.
 3. The `import(<path>)` is the where the actual dynamic import _(magic)_ happens.
 It returns a promise which resolves when the component is on the client.
-4. The `LoadingComponent` shows while the component is not yet loaded.
+4. The `loading` _(Component)_ shows while the component is not yet loaded.
 5. The `delay` hides the `LoadingComponent` for this long, so there is less flicker in case the component is already cached and can just load-in super fast.
+
 
 Because the `import` is no longer part of the initial clientside bundle,
 it is compiled with all of it's dependencies, separately.
@@ -278,6 +287,7 @@ They will be loaded later, the first time they are used, and then cached on the 
 
 > You can clone [this repo](https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git)
 > and checkout the `04-after-optimization` branch.
+> **NOTE** (updated version on the `master` branch... code changed, this page was updated too... that old branch was not)
 
 Did it do anything?  Lets profile again.
 
@@ -305,6 +315,8 @@ But if I get rid of the `bundle-visualizer` then I can see our date picker worki
 ```sh
 meteor remove bundle-visualizer
 ```
+> **UPDATE** there is a new meteor 1.5.1+ feature where you don't have to add the package, so thererefor you don't have to remove it
+> `meteor --extra-packages bundle-visualizer --production`
 
 ![after-dynamic-import-still-working](https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif)
 
