@@ -402,6 +402,13 @@ npm run start-as-prod
 #   meteor --production
 </code></pre>
 
+<blockquote>
+<p><strong>UPDATE</strong> there is a new meteor 1.5.1+ feature where you don&rsquo;t have to add the package
+you can just add it for the start&hellip;
+<code>meteor --extra-packages bundle-visualizer --production</code>
+which I have setup in <code>package.json</code> as <code>npm run start-profiled</code></p>
+</blockquote>
+
 <p>Then an overlay happens in your browser and you can hover over parts to see what they total size is for the part, and it&rsquo;s children&hellip;</p>
 
 <p><img src="https://media.giphy.com/media/l4FGFeTW6pqVvabGE/giphy.gif" alt="bundle-visualizer-before-optimize" /></p>
@@ -549,7 +556,7 @@ which handles the <em>&ldquo;maybe I&rsquo;m loading, maybe I&rsquo;m loaded&rdq
 
 <p><strong>after: dynamic import</strong> no longer a part of clientside bundle</p>
 
-<pre><code class="language-js">import Loader from 'react-loader';
+<pre><code class="language-js">import Loader from 'react-loadable';
 
 // generic loading component to show while transfering section of code
 const LoadingComponent = () =&gt; &lt;span className=&quot;text-muted&quot;&gt;&lt;i className=&quot;fa fa-refresh&quot; /&gt;&lt;/span&gt;;
@@ -558,21 +565,25 @@ const PickDates = Loader({
   // this does the dynamic import, and returns a promise
   loader: () =&gt; import('./PickDates'),
   // this is our generic loading display (optional)
-  LoadingComponent,
+  loading: LoadingComponent,
   // this is a delay before we decide to show our LoadingComponent (optional)
   delay: 200,
 });
+
+// there are more options you can use,
+// including a timeout, and even a pre-loader... NEAT!
 </code></pre>
 
 <p>It can get a lot more complex, but this is a fine place to start.</p>
 
 <ol>
-<li><code>react-loader</code> is a <a href="https://facebook.github.io/react/docs/higher-order-components.html">HOC</a>
+<li><a href="https://github.com/thejameskyle/react-loadable">react-loadable</a>
+is a <a href="https://facebook.github.io/react/docs/higher-order-components.html">HOC</a>
 which will render our component when it&rsquo;s available.</li>
 <li>The <code>loader: &lt;func&gt;</code> function recieves a promise which resolves as soon as the dynamic import is done.</li>
 <li>The <code>import(&lt;path&gt;)</code> is the where the actual dynamic import <em>(magic)</em> happens.
 It returns a promise which resolves when the component is on the client.</li>
-<li>The <code>LoadingComponent</code> shows while the component is not yet loaded.</li>
+<li>The <code>loading</code> <em>(Component)</em> shows while the component is not yet loaded.</li>
 <li>The <code>delay</code> hides the <code>LoadingComponent</code> for this long, so there is less flicker in case the component is already cached and can just load-in super fast.</li>
 </ol>
 
@@ -584,7 +595,8 @@ They will be loaded later, the first time they are used, and then cached on the 
 
 <blockquote>
 <p>You can clone <a href="https://github.com/zeroasterisk/meteor-example-optimize-client-bundle.git">this repo</a>
-and checkout the <code>04-after-optimization</code> branch.</p>
+and checkout the <code>04-after-optimization</code> branch.
+<strong>NOTE</strong> (updated version on the <code>master</code> branch&hellip; code changed, this page was updated too&hellip; that old branch was not)</p>
 </blockquote>
 
 <p>Did it do anything?  Lets profile again.</p>
@@ -627,6 +639,11 @@ and checkout the <code>04-after-optimization</code> branch.</p>
 
 <pre><code class="language-sh">meteor remove bundle-visualizer
 </code></pre>
+
+<blockquote>
+<p><strong>UPDATE</strong> there is a new meteor 1.5.1+ feature where you don&rsquo;t have to add the package, so thererefor you don&rsquo;t have to remove it
+<code>meteor --extra-packages bundle-visualizer --production</code></p>
+</blockquote>
 
 <p><img src="https://media.giphy.com/media/3o7buf4zcCkBnlL0jK/giphy.gif" alt="after-dynamic-import-still-working" /></p>
 
